@@ -67,10 +67,17 @@ COVID 2020 showed a 110% increase in average correlation (0.24 to 0.51). Yen car
 **Tag:** `phase-1-complete`
 **Branch:** `main`
 
+## Phase 1.5 Completion (2026-05-10)
+
+All three issues resolved:
+- **Issue A (Bridgewater NaN bug):** Fixed via `dropna()` on component returns + `min_periods=30` in rolling windows. Replicator now shows -15.7% drawdown in COVID, +0.9% in yen carry. Ann vol = 9.7%, cumulative return = +48.4%.
+- **Issue B (Headline overclaim):** Added `analysis_4b_liquidity_regression_by_window()`. Result: 3/7 significant negative spread coefficients in 2020, 0/8 in 2024. Headline rewritten to present as hypothesis consistent with data + alternative explanations.
+- **Issue C (Numeric traceability):** 22 inline citations added to FINDINGS_MEMO.md in `[T1/T2/T4b: ticker, event, column]` format.
+
+**Tag:** `phase-1.5-complete`
+
 ## Next Phase
 
-Phase 2 begins after Arnav reviews FINDINGS_MEMO.md. Priority items for Phase 2:
-1. Fix Bridgewater replicator NaN bug in `data_pipeline.py`
-2. Update `requirements.txt` to reflect working versions (yfinance 1.3.0, scipy<1.15)
-3. Re-run pipeline and analysis with working replicator
-4. Begin paper section drafts
+Phase 2 begins after Arnav reviews FINDINGS_MEMO.md. Remaining items:
+1. Update `requirements.txt` to reflect working versions (yfinance 1.3.0, scipy<1.15)
+2. Begin paper section drafts
