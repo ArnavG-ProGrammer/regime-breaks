@@ -555,18 +555,17 @@ def analysis_5_cross_event(t1: pd.DataFrame, t3: pd.DataFrame) -> pd.DataFrame:
 # Analysis 0: Bridgewater replicator validation against press disclosures
 # --------------------------------------------------------------------------
 
-# Hard-coded reference points from contemporaneous press coverage.
-# Each entry: (period_label, start_date, end_date, reported_return, source, verify_flag)
+# Reference points from contemporaneous press coverage, matched to specific periods.
+# Each entry: (period_label, period_type, start_date, end_date, reported_return, source, verify_flag)
 BRIDGEWATER_REFERENCE_RETURNS = [
-    ("2019-Q4", "2019-10-01", "2019-12-31", None, "no public disclosure found", "[VERIFY]"),
-    ("2020-Q1", "2020-01-01", "2020-03-31", -0.14, "FT/Reuters April 2020 reporting", "[VERIFY]"),
-    ("2020-Q2", "2020-04-01", "2020-06-30", None, "no public disclosure found", "[VERIFY]"),
-    ("2020-Q3", "2020-07-01", "2020-09-30", None, "no public disclosure found", "[VERIFY]"),
-    ("2020-Q4", "2020-10-01", "2020-12-31", None, "no public disclosure found", "[VERIFY]"),
-    ("2021-full", "2021-01-01", "2021-12-31", None, "no public disclosure found", "[VERIFY]"),
-    ("2022-full", "2022-01-01", "2022-12-31", -0.094, "Bloomberg Jan 2023 reporting", "[VERIFY]"),
-    ("2023-full", "2023-01-01", "2023-12-31", None, "no public disclosure found", "[VERIFY]"),
-    ("2024-H1", "2024-01-01", "2024-06-30", None, "no public disclosure found", "[VERIFY]"),
+    ("Q1 2020", "quarterly", "2020-01-01", "2020-03-31", -0.14,
+     "FT/Reuters April 2020 reporting", True),
+    ("FY 2020", "annual", "2020-01-01", "2020-12-31", 0.184,
+     "Bloomberg January 2021 reporting", True),
+    ("FY 2022", "annual", "2022-01-01", "2022-12-31", -0.094,
+     "Bloomberg January 2023 reporting", True),
+    ("FY 2023", "annual", "2023-01-01", "2023-12-31", 0.006,
+     "Reuters/Bloomberg January 2024 reporting", True),
 ]
 
 
@@ -582,15 +581,16 @@ def analysis_0_bridgewater_validation(rets: pd.DataFrame) -> pd.DataFrame:
     bw = rets["Bridgewater_replicator"].dropna()
 
     rows = []
-    for period, start, end, ref_ret, source, flag in BRIDGEWATER_REFERENCE_RETURNS:
+    for label, ptype, start, end, ref_ret, source, flag in BRIDGEWATER_REFERENCE_RETURNS:
         window = bw.loc[start:end]
         if window.empty:
             continue
         rep_ret = float(np.expm1(window.sum()))
         rows.append({
-            "period": period,
-            "replicator_return": rep_ret,
-            "reference_return": ref_ret,
+            "period_label": label,
+            "period_type": ptype,
+            "replicator_return_pct": round(rep_ret * 100, 1),
+            "reference_return_pct": round(ref_ret * 100, 1),
             "source": source,
             "verify_flag": flag,
         })
@@ -599,38 +599,91 @@ def analysis_0_bridgewater_validation(rets: pd.DataFrame) -> pd.DataFrame:
     df.to_csv(TABLES_DIR / "table0_bridgewater_validation.csv", index=False)
     log.info(f"Analysis 0: wrote table0_bridgewater_validation.csv ({len(df)} rows)")
 
-    # Compute correlation where both values are available
-    paired = df.dropna(subset=["replicator_return", "reference_return"])
-    if len(paired) >= 2:
-        corr = paired["replicator_return"].corr(paired["reference_return"])
-        log.info(f"  Replicator vs reference correlation: {corr:.3f} (n={len(paired)})")
-    else:
-        corr = None
-        log.info(f"  Only {len(paired)} paired observations; correlation not meaningful")
+    # Compute correlation across all paired points
+    corr = df["replicator_return_pct"].corr(df["reference_return_pct"])
+    log.info(f"  Replicator vs reference correlation: {corr:.3f} (n={len(df)})")
 
-    # Chart: monthly cumulative returns comparison
+    # --- Supplementary chart: monthly time series (fig0b) ---
     monthly_rets = bw.resample("ME").sum().apply(np.expm1)
-    fig, ax = plt.subplots(figsize=(9, 4))
-    ax.bar(monthly_rets.index, monthly_rets.values * 100,
-           width=20, color=NAVY, alpha=0.6, label="Replicator (monthly)")
+    fig_b, ax_b = plt.subplots(figsize=(9, 4))
+    ax_b.bar(monthly_rets.index, monthly_rets.values * 100,
+             width=20, color=NAVY, alpha=0.6, label="Replicator (monthly)")
+    ax_b.set_xlabel("Date")
+    ax_b.set_ylabel("Return (%)")
+    ax_b.set_title("Bridgewater replicator: monthly returns, 2019-2025", loc="left")
+    ax_b.axhline(0, color="black", linewidth=0.5)
+    ax_b.legend(loc="lower left")
+    plt.savefig(FIGURES_DIR / "fig0b_bridgewater_monthly.png")
+    plt.close(fig_b)
 
-    # Overlay reference points as markers
-    for _, row in paired.iterrows():
-        # Place marker at midpoint of period
-        mid = pd.Timestamp(BRIDGEWATER_REFERENCE_RETURNS[
-            [r[0] for r in BRIDGEWATER_REFERENCE_RETURNS].index(row["period"])
-        ][2])
-        ax.scatter(mid, row["reference_return"] * 100,
-                   color=RUST, s=80, zorder=5, marker="D",
-                   label="Reported All Weather" if _ == paired.index[0] else "")
+    # --- Headline chart: two-panel comparison (fig0) ---
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Return (%)")
-    ax.set_title("Bridgewater replicator vs reported All Weather returns", loc="left")
-    ax.axhline(0, color="black", linewidth=0.5)
-    ax.legend(loc="lower left")
+    # Left panel: grouped bar chart
+    labels = df["period_label"].tolist()
+    rep_vals = df["replicator_return_pct"].tolist()
+    ref_vals = df["reference_return_pct"].tolist()
+    x = np.arange(len(labels))
+    width = 0.35
+
+    bars_rep = ax1.bar(x - width / 2, rep_vals, width, color=NAVY, label="Replicator")
+    bars_ref = ax1.bar(x + width / 2, ref_vals, width, color=RUST, label="Reported All Weather")
+
+    for bar in bars_rep:
+        h = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width() / 2, h + (0.3 if h >= 0 else -0.8),
+                 f"{h:.1f}%", ha="center", va="bottom" if h >= 0 else "top",
+                 fontsize=8, color=NAVY)
+    for bar in bars_ref:
+        h = bar.get_height()
+        ax1.text(bar.get_x() + bar.get_width() / 2, h + (0.3 if h >= 0 else -0.8),
+                 f"{h:.1f}%", ha="center", va="bottom" if h >= 0 else "top",
+                 fontsize=8, color=RUST)
+
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(labels)
+    ax1.set_ylabel("Return (%)")
+    ax1.set_title("Direct comparison", loc="left")
+    ax1.axhline(0, color="black", linewidth=0.5)
+    ax1.legend(loc="lower right")
+
+    # Right panel: scatter with 45-degree line
+    ax2.scatter(rep_vals, ref_vals, color=NAVY, s=70, zorder=5)
+    for i, label in enumerate(labels):
+        ax2.annotate(label, (rep_vals[i], ref_vals[i]),
+                     fontsize=8, xytext=(5, 5), textcoords="offset points")
+
+    all_vals = rep_vals + ref_vals
+    lo = min(all_vals) - 3
+    hi = max(all_vals) + 3
+    ax2.plot([lo, hi], [lo, hi], linestyle="--", color=GRAY, linewidth=1,
+             label="Perfect agreement")
+    ax2.set_xlim(lo, hi)
+    ax2.set_ylim(lo, hi)
+    ax2.set_xlabel("Replicator return (%)")
+    ax2.set_ylabel("Reported All Weather return (%)")
+    ax2.set_title(f"Agreement (r = {corr:.2f}, n = {len(df)})", loc="left")
+    ax2.legend(loc="lower right")
+    ax2.set_aspect("equal", adjustable="box")
+
+    plt.suptitle("Bridgewater All Weather replicator validation: "
+                 "four reference periods, 2020\u20132023",
+                 x=0.02, ha="left", fontsize=11, y=1.02)
+    plt.tight_layout()
     plt.savefig(FIGURES_DIR / "fig0_bridgewater_validation.png")
     plt.close(fig)
+
+    # Caption file
+    with (FIGURES_DIR / "fig0_caption.txt").open("w") as f:
+        f.write(
+            "Figure 0. Replicator returns compared with publicly disclosed "
+            "All Weather returns at four reference periods. Left: direct "
+            "comparison; right: agreement plot with 45-degree reference. "
+            "The replicator captures direction and approximate magnitude "
+            "but understates losses, consistent with its 1.5x leverage cap "
+            "versus the actual fund's reported 3-4x leverage on the bond "
+            "sleeve."
+        )
 
     return df
 

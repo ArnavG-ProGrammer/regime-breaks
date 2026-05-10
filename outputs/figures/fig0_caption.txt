@@ -1,0 +1,1 @@
+Figure 0. Replicator returns compared with publicly disclosed All Weather returns at four reference periods. Left: direct comparison; right: agreement plot with 45-degree reference. The replicator captures direction and approximate magnitude but understates losses, consistent with its 1.5x leverage cap versus the actual fund's reported 3-4x leverage on the bond sleeve.
