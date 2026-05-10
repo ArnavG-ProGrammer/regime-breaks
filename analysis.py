@@ -631,14 +631,20 @@ def analysis_0_bridgewater_validation(rets: pd.DataFrame) -> pd.DataFrame:
 
     for bar in bars_rep:
         h = bar.get_height()
-        ax1.text(bar.get_x() + bar.get_width() / 2, h + (0.3 if h >= 0 else -0.8),
-                 f"{h:.1f}%", ha="center", va="bottom" if h >= 0 else "top",
-                 fontsize=8, color=NAVY)
+        if h >= 0:
+            ax1.text(bar.get_x() + bar.get_width() / 2, h + 0.6,
+                     f"{h:.1f}%", ha="center", va="bottom", fontsize=8, color=NAVY)
+        else:
+            ax1.text(bar.get_x() + bar.get_width() / 2, h / 2,
+                     f"{h:.1f}%", ha="center", va="center", fontsize=8, color="white")
     for bar in bars_ref:
         h = bar.get_height()
-        ax1.text(bar.get_x() + bar.get_width() / 2, h + (0.3 if h >= 0 else -0.8),
-                 f"{h:.1f}%", ha="center", va="bottom" if h >= 0 else "top",
-                 fontsize=8, color=RUST)
+        if h >= 0:
+            ax1.text(bar.get_x() + bar.get_width() / 2, h + 0.6,
+                     f"{h:.1f}%", ha="center", va="bottom", fontsize=8, color=RUST)
+        else:
+            ax1.text(bar.get_x() + bar.get_width() / 2, h / 2,
+                     f"{h:.1f}%", ha="center", va="center", fontsize=8, color="white")
 
     ax1.set_xticks(x)
     ax1.set_xticklabels(labels)
