@@ -418,6 +418,78 @@ def analysis_4_liquidity_regression(
 
 
 # --------------------------------------------------------------------------
+# Analysis 4b: Liquidity regression BY EVENT WINDOW
+# --------------------------------------------------------------------------
+
+def analysis_4b_liquidity_regression_by_window(
+    rets: pd.DataFrame,
+    spreads: pd.DataFrame,
+) -> pd.DataFrame:
+    """Same specification as analysis_4 but restricted to the event window
+    plus 30 trading days on each side. Tests whether the spread coefficient
+    is significant within each event specifically — if significant in 2020
+    but not 2024, that supports the credit-liquidity mechanism hypothesis."""
+    if spreads.empty:
+        log.warning("Spread file unavailable; skipping Analysis 4b")
+        return pd.DataFrame()
+
+    focus = [t for t in ["IVV", "AGG", "TLT", "HYG", "MTUM", "DBMF",
+                         "Bridgewater_replicator", "TwoSigma_factor_proxy"]
+             if t in rets.columns]
+    if "^GSPC" not in rets.columns or "^VIX" not in rets.columns:
+        log.warning("Need ^GSPC and ^VIX for Analysis 4b; skipping")
+        return pd.DataFrame()
+
+    sp = rets["^GSPC"].rename("sp500_ret")
+    vix_chg = rets["^VIX"].rename("vix_ret")
+
+    rows = []
+    for event_name, ev in EVENTS.items():
+        # Extend window by ~30 trading days on each side
+        window_start = pd.Timestamp(ev["event_start"]) - pd.Timedelta(days=45)
+        window_end = pd.Timestamp(ev["event_end"]) + pd.Timedelta(days=45)
+
+        for ticker in focus:
+            if ticker not in rets.columns:
+                continue
+            if ticker in spreads.columns:
+                sp_series = spreads[ticker].rename("own_spread_lag").shift(1)
+            elif "IVV" in spreads.columns:
+                sp_series = spreads["IVV"].rename("own_spread_lag").shift(1)
+            else:
+                continue
+
+            df = pd.concat([rets[ticker].rename("ret"), sp, vix_chg, sp_series],
+                           axis=1).loc[window_start:window_end].dropna()
+            if df.shape[0] < 20:
+                continue
+
+            X = df[["sp500_ret", "vix_ret", "own_spread_lag"]]
+            X = sm.add_constant(X)
+            y = df["ret"]
+            # Use OLS with HAC; fewer lags for shorter window
+            n_lags = min(5, max(1, df.shape[0] // 10))
+            model = sm.OLS(y, X).fit(cov_type="HAC", cov_kwds={"maxlags": n_lags})
+            rows.append({
+                "event": event_name,
+                "ticker": ticker,
+                "label": FIRM_LABELS.get(ticker, ticker),
+                "n_obs": int(df.shape[0]),
+                "beta_sp500": float(model.params["sp500_ret"]),
+                "beta_vix": float(model.params["vix_ret"]),
+                "beta_spread_lag": float(model.params["own_spread_lag"]),
+                "spread_lag_tstat": float(model.tvalues["own_spread_lag"]),
+                "spread_lag_pvalue": float(model.pvalues["own_spread_lag"]),
+                "r_squared": float(model.rsquared),
+            })
+    df_out = pd.DataFrame(rows)
+    df_out.to_csv(TABLES_DIR / "table4b_liquidity_regression_by_window.csv", index=False)
+    log.info(f"Analysis 4b: wrote table4b_liquidity_regression_by_window.csv "
+             f"({len(df_out)} rows)")
+    return df_out
+
+
+# --------------------------------------------------------------------------
 # Analysis 5: Cross-event synthesis
 # --------------------------------------------------------------------------
 
@@ -493,6 +565,7 @@ def main() -> None:
     t2 = analysis_2_correlations(rets)
     t3 = analysis_3_vol_breach(rets)
     t4 = analysis_4_liquidity_regression(rets, spreads)
+    t4b = analysis_4b_liquidity_regression_by_window(rets, spreads)
     t5 = analysis_5_cross_event(t1, t3)
 
     summary = {
@@ -500,6 +573,7 @@ def main() -> None:
         "avg_correlations_by_event": t2,
         "n_volbreach_rows": len(t3),
         "n_regression_rows": len(t4),
+        "n_regression_by_window_rows": len(t4b),
         "n_synthesis_rows": len(t5),
     }
     with (OUTPUT_DIR / "analysis_summary.json").open("w") as f:

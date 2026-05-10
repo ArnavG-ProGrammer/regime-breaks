@@ -1,6 +1,6 @@
 ticker,label,event,long_run_vol_ann,event_vol_ann,breach_ratio
-Bridgewater_replicator,Bridgewater (replicator),covid_2020,0.0015025130483287135,0.0,0.0
-Bridgewater_replicator,Bridgewater (replicator),yen_carry_2024,0.0015025130483287135,0.0,0.0
+Bridgewater_replicator,Bridgewater (replicator),covid_2020,0.09721762467338126,0.24865974558519605,2.557764051740718
+Bridgewater_replicator,Bridgewater (replicator),yen_carry_2024,0.09721762467338126,0.13826698158910153,1.422241924276924
 TwoSigma_factor_proxy,Two Sigma (factor proxy),covid_2020,0.16611647854778008,0.6427774682796322,3.869438323632355
 TwoSigma_factor_proxy,Two Sigma (factor proxy),yen_carry_2024,0.16611647854778008,0.2748649896204811,1.6546521574704685
 JEPI,JPMorgan (JEPI),yen_carry_2024,0.10300548593706983,0.20978856599264606,2.036673717755327

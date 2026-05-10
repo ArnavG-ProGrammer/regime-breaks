@@ -444,14 +444,19 @@ def build_risk_parity_replicator(
 
     rets = np.log(prices[available] / prices[available].shift(1))
 
+    # Drop rows where any component is NaN (non-US trading days create gaps)
+    rets = rets.dropna()
+
     # Trailing volatility per component, daily annualized
-    vol = rets.rolling(lookback).std() * np.sqrt(252)
+    # min_periods=30 allows computation even with residual gaps
+    vol = rets.rolling(lookback, min_periods=30).std() * np.sqrt(252)
     inv_vol = 1.0 / vol
+    # Drop rows where all weights are NaN (warmup period)
     weights = inv_vol.div(inv_vol.sum(axis=1), axis=0)
 
     # Vol-target the overall portfolio
     portfolio_rets_unscaled = (weights.shift(1) * rets).sum(axis=1)
-    realized_vol = portfolio_rets_unscaled.rolling(lookback).std() \
+    realized_vol = portfolio_rets_unscaled.rolling(lookback, min_periods=30).std() \
         * np.sqrt(252)
     leverage = (target_vol / realized_vol).clip(upper=1.5).shift(1)
     portfolio_rets = leverage * portfolio_rets_unscaled
