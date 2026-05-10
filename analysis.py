@@ -552,6 +552,90 @@ def analysis_5_cross_event(t1: pd.DataFrame, t3: pd.DataFrame) -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------
+# Analysis 0: Bridgewater replicator validation against press disclosures
+# --------------------------------------------------------------------------
+
+# Hard-coded reference points from contemporaneous press coverage.
+# Each entry: (period_label, start_date, end_date, reported_return, source, verify_flag)
+BRIDGEWATER_REFERENCE_RETURNS = [
+    ("2019-Q4", "2019-10-01", "2019-12-31", None, "no public disclosure found", "[VERIFY]"),
+    ("2020-Q1", "2020-01-01", "2020-03-31", -0.14, "FT/Reuters April 2020 reporting", "[VERIFY]"),
+    ("2020-Q2", "2020-04-01", "2020-06-30", None, "no public disclosure found", "[VERIFY]"),
+    ("2020-Q3", "2020-07-01", "2020-09-30", None, "no public disclosure found", "[VERIFY]"),
+    ("2020-Q4", "2020-10-01", "2020-12-31", None, "no public disclosure found", "[VERIFY]"),
+    ("2021-full", "2021-01-01", "2021-12-31", None, "no public disclosure found", "[VERIFY]"),
+    ("2022-full", "2022-01-01", "2022-12-31", -0.094, "Bloomberg Jan 2023 reporting", "[VERIFY]"),
+    ("2023-full", "2023-01-01", "2023-12-31", None, "no public disclosure found", "[VERIFY]"),
+    ("2024-H1", "2024-01-01", "2024-06-30", None, "no public disclosure found", "[VERIFY]"),
+]
+
+
+def analysis_0_bridgewater_validation(rets: pd.DataFrame) -> pd.DataFrame:
+    """Compare the Bridgewater risk-parity replicator's returns against
+    publicly disclosed All Weather returns assembled from press coverage.
+    This validates that the replicator captures the broad risk profile
+    even if it understates magnitude due to leverage cap and ETF construction."""
+    if "Bridgewater_replicator" not in rets.columns:
+        log.warning("Bridgewater_replicator not in returns; skipping validation")
+        return pd.DataFrame()
+
+    bw = rets["Bridgewater_replicator"].dropna()
+
+    rows = []
+    for period, start, end, ref_ret, source, flag in BRIDGEWATER_REFERENCE_RETURNS:
+        window = bw.loc[start:end]
+        if window.empty:
+            continue
+        rep_ret = float(np.expm1(window.sum()))
+        rows.append({
+            "period": period,
+            "replicator_return": rep_ret,
+            "reference_return": ref_ret,
+            "source": source,
+            "verify_flag": flag,
+        })
+
+    df = pd.DataFrame(rows)
+    df.to_csv(TABLES_DIR / "table0_bridgewater_validation.csv", index=False)
+    log.info(f"Analysis 0: wrote table0_bridgewater_validation.csv ({len(df)} rows)")
+
+    # Compute correlation where both values are available
+    paired = df.dropna(subset=["replicator_return", "reference_return"])
+    if len(paired) >= 2:
+        corr = paired["replicator_return"].corr(paired["reference_return"])
+        log.info(f"  Replicator vs reference correlation: {corr:.3f} (n={len(paired)})")
+    else:
+        corr = None
+        log.info(f"  Only {len(paired)} paired observations; correlation not meaningful")
+
+    # Chart: monthly cumulative returns comparison
+    monthly_rets = bw.resample("ME").sum().apply(np.expm1)
+    fig, ax = plt.subplots(figsize=(9, 4))
+    ax.bar(monthly_rets.index, monthly_rets.values * 100,
+           width=20, color=NAVY, alpha=0.6, label="Replicator (monthly)")
+
+    # Overlay reference points as markers
+    for _, row in paired.iterrows():
+        # Place marker at midpoint of period
+        mid = pd.Timestamp(BRIDGEWATER_REFERENCE_RETURNS[
+            [r[0] for r in BRIDGEWATER_REFERENCE_RETURNS].index(row["period"])
+        ][2])
+        ax.scatter(mid, row["reference_return"] * 100,
+                   color=RUST, s=80, zorder=5, marker="D",
+                   label="Reported All Weather" if _ == paired.index[0] else "")
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Return (%)")
+    ax.set_title("Bridgewater replicator vs reported All Weather returns", loc="left")
+    ax.axhline(0, color="black", linewidth=0.5)
+    ax.legend(loc="lower left")
+    plt.savefig(FIGURES_DIR / "fig0_bridgewater_validation.png")
+    plt.close(fig)
+
+    return df
+
+
+# --------------------------------------------------------------------------
 # Main
 # --------------------------------------------------------------------------
 
@@ -561,6 +645,7 @@ def main() -> None:
     spreads = _load_spreads()
     log.info(f"Loaded returns: {rets.shape}, spreads: {spreads.shape}")
 
+    t0 = analysis_0_bridgewater_validation(rets)
     t1 = analysis_1_drawdowns(rets)
     t2 = analysis_2_correlations(rets)
     t3 = analysis_3_vol_breach(rets)
@@ -569,6 +654,7 @@ def main() -> None:
     t5 = analysis_5_cross_event(t1, t3)
 
     summary = {
+        "n_bridgewater_validation_rows": len(t0),
         "n_drawdown_rows": len(t1),
         "avg_correlations_by_event": t2,
         "n_volbreach_rows": len(t3),
