@@ -1,0 +1,18 @@
+{
+  "n_drawdown_rows": 48,
+  "avg_correlations_by_event": {
+    "covid_2020": {
+      "pre_avg_corr": 0.2412277503848888,
+      "event_avg_corr": 0.506002792057755,
+      "post_avg_corr": 0.4024092719639578
+    },
+    "yen_carry_2024": {
+      "pre_avg_corr": 0.3532799633190141,
+      "event_avg_corr": 0.447240590188418,
+      "post_avg_corr": 0.2796239527703706
+    }
+  },
+  "n_volbreach_rows": 14,
+  "n_regression_rows": 8,
+  "n_synthesis_rows": 25
+}

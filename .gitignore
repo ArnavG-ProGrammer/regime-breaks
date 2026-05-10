@@ -1,0 +1,26 @@
+# Raw and clean data (large, reproducible from pipeline)
+data/raw/*.parquet
+data/clean/*.parquet
+
+# Logs
+logs/*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment secrets
+.env
+
+# Scaffold zip
+regime-breaks-scaffold.zip

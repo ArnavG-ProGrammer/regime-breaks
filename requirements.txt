@@ -1,0 +1,10 @@
+# Pinned versions for reproducibility. Anyone running this pipeline two
+# years from now should be able to recreate the exact dataset.
+yfinance==0.2.51
+pandas==2.2.3
+numpy==2.0.2
+fredapi==0.5.2
+requests==2.32.3
+matplotlib==3.9.2
+statsmodels==0.14.4
+pyarrow==18.0.0
