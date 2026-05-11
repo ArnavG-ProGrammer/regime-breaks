@@ -11,21 +11,21 @@ The common thread is that JPM's AI assists with *how* to trade, not *what* to tr
 **Testable hypothesis:** JPM equity should behave like a leveraged beta exposure in both events, with drawdowns exceeding the S&P 500 due to credit-cycle amplification rather than model-driven failure. The empirical results confirm this: JPM fell -42.5% versus the S&P's -33.9% in 2020 and -8.4% versus -6.1% in 2024 — consistent excess driven by balance-sheet exposure, not AI architecture.
 
 **Citations:**
-- Son, H. (2017, February 28). JPMorgan software does in seconds what took lawyers 360,000 hours. *Bloomberg*.
+- Son, H. (2017, February 28). JPMorgan marshals an army of developers to automate high finance. *Bloomberg*. https://www.bloomberg.com/news/articles/2017-02-28/jpmorgan-marshals-an-army-of-developers-to-automate-high-finance
 - JPMorgan Chase & Co. (2025). 2024 Annual Report. jpmorganchase.com/ir [VERIFY]
 
 ## 2.2 BlackRock: factor-covariance risk models (Aladdin)
 
 **Architectural claim:** BlackRock's Aladdin platform performs factor-based risk decomposition using historical covariance matrices estimated over rolling windows. This architecture is *vulnerable* to regime breaks because correlations estimated on pre-crisis data systematically understate cross-asset comovement during stress. When multiple institutional clients run similar Aladdin-derived risk overlays, common-mode de-risking can amplify drawdowns.
 
-Aladdin's scale is difficult to overstate. BlackRock's Form 10-K for fiscal year 2025 reported total assets under management of approximately $14 trillion as of 31 December 2024 [VERIFY - confirm against SEC EDGAR Form 10-K CIK 0001364742]; Aladdin technology services extend to approximately $25 trillion in assets across institutional clients [VERIFY - confirm against SEC EDGAR Form 10-K CIK 0001364742]. The Financial Times described Aladdin as "the technology hub of modern finance" [VERIFY - confirm against Henderson and Walker, FT May 2020] (Henderson and Walker, 2020). The platform provides risk analytics, portfolio construction, and trade execution across equities, fixed income, and alternatives.
+Aladdin's scale is difficult to overstate. BlackRock's Form 10-K for fiscal year 2025 reported total assets under management of $14.04 trillion ($14,041,518 million) as of 31 December 2024 (BlackRock 10-K FY2025, filed 25 February 2026); Aladdin technology services extend to approximately $25 trillion in assets across institutional clients [VERIFY - confirm Aladdin AuA against 10-K page reference]. The Financial Times described Aladdin as "the technology hub of modern finance" [VERIFY - confirm against Henderson and Walker, FT May 2020] (Henderson and Walker, 2020). The platform provides risk analytics, portfolio construction, and trade execution across equities, fixed income, and alternatives.
 
 For this study, BlackRock's architecture is observable through its iShares ETF family. IVV (Core S&P 500), AGG (Core U.S. Aggregate Bond), TLT (20+ Year Treasury), EEM (Emerging Markets), and HYG (High Yield Corporate Bond) are all Aladdin-overseen products whose daily returns are public. These products do not reflect Aladdin's *recommendations* to external clients, but they reflect the risk management framework that governs a substantial share of global indexed assets.
 
 **Testable hypothesis:** Aladdin-overseen products should exhibit high cross-correlation during stress — the signature of a shared risk model. In March 2020, IVV tracked the S&P almost exactly (-33.9%), while AGG (-9.6%) and TLT (-15.7%) broke from their normal negative correlation with equities. The empirical data show average off-diagonal correlation jumping from 0.25 to 0.50 — consistent with the hypothesis that factor-covariance models trained on pre-crisis data produced correlated risk signals across nominally diverse products.
 
 **Citations:**
-- BlackRock, Inc. (2026). Form 10-K, fiscal year 2025. U.S. Securities and Exchange Commission. CIK 0001364742. [VERIFY]
+- BlackRock, Inc. (2026). Form 10-K, fiscal year 2025. U.S. Securities and Exchange Commission. CIK 0002012383. https://www.sec.gov/Archives/edgar/data/0002012383/000119312526071966/blk-20251231.htm Filed February 25, 2026.
 - Henderson, R., & Walker, O. (2020, May). BlackRock's black box: the technology hub of modern finance. *Financial Times*. [VERIFY]
 
 ## 2.3 Bridgewater: regime-aware risk parity
@@ -47,7 +47,7 @@ All Weather's returns are private. The fund reportedly lost approximately -14% i
 
 **Architectural claim:** Two Sigma runs short-to-medium-horizon systematic strategies across equity, macro, and event-driven mandates. The architecture operates at the *signal generation* layer — statistical models identify mispricings, and positions are taken algorithmically. This design exposes the firm to factor crowding: when many systematic shops hold similar positions, forced unwinds can produce correlated losses that the individual models do not anticipate.
 
-Two Sigma was founded in 2001 by David Siegel and John Overdeck. As of 2024, the firm managed approximately $60 billion across its main funds: Compass (macro/systematic) [VERIFY], Spectrum (technology-enhanced strategies) [VERIFY], and Risk Premia (factor harvesting) [VERIFY]. Fund name attributions to be verified against Two Sigma's Form ADV filing with the SEC and twosigma.com product page during paper write-up. The architectural characterization (multi-factor systematic across equity, macro, and event-driven mandates) does not depend on the specific fund names. Patterson (2010) documents the rise of quantitative trading firms including Two Sigma's predecessors, tracing how statistical arbitrage evolved from a niche strategy into a dominant market force. Two Sigma's research division publishes technical notes at twosigma.com/insights covering topics including causal inference, alternative data, and market microstructure [VERIFY — specific note titles to be confirmed during paper write-up].
+Two Sigma was founded in 2001 by David Siegel and John Overdeck, who served as co-CEOs until August 2024 when the firm transitioned leadership to new co-CEOs. As of 2024, the firm managed approximately $60 billion across its main funds: Compass (global macro), Spectrum (flagship multi-strategy systematic), and Absolute Return Enhanced (multi-strategy hedge fund) — verified against Hedgeweek's January 2025 reporting on 2024 quant fund returns. Patterson (2010) documents the rise of quantitative trading firms including Two Sigma's predecessors, tracing how statistical arbitrage evolved from a niche strategy into a dominant market force. Two Sigma's research division publishes technical notes at twosigma.com/insights covering topics including causal inference, alternative data, and market microstructure [VERIFY — specific note titles to be confirmed during paper write-up].
 
 Two Sigma's returns are private. This study uses a factor ETF basket — MTUM (momentum), VLUE (value), QUAL (quality), USMV (minimum volatility), plus DBMF (managed futures, replicating the SocGen CTA Index) — as a systematic factor proxy. The basket captures the broad exposure profile of a diversified multi-factor systematic shop. It does not capture Two Sigma's specific alpha, leverage, or dynamic hedging. The proxy is transparent about what it measures: the performance of publicly available systematic factor exposure, which serves as a lower bound on what a sophisticated systematic firm would achieve.
 
@@ -76,14 +76,11 @@ Two Sigma's returns are private. This study uses a factor ETF basket — MTUM (m
 
 **Banned phrases found:** 0
 
-**[VERIFY] tags:** 12
+**[VERIFY] tags:** 6
 - JPMorgan 2024 Annual Report URL (1)
-- BlackRock 10-K AUM figure (1)
 - BlackRock 10-K Aladdin assets under analytics (1)
 - Henderson and Walker FT article quote (1)
-- BlackRock 10-K filing citation (1)
 - Henderson and Walker FT citation (1)
 - FT/Reuters Bridgewater Q1 2020 coverage (1)
-- Bloomberg January 2023 Bridgewater reporting (covered in T0)
-- Two Sigma fund names — Compass, Spectrum, Risk Premia (3)
-- Two Sigma research notes — specific titles (2)
+- Two Sigma research notes — specific titles (1)
+- **Resolved:** BlackRock AUM ($14.04T confirmed), BlackRock CIK (corrected to 0002012383), Two Sigma fund names (verified via Hedgeweek Jan 2025), Bloomberg article URL (confirmed)
