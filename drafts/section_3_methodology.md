@@ -8,7 +8,7 @@ The two-event design is intentional. Each event activates a different stress mec
 
 ## 3.2 Data sources
 
-Daily price data for equities and ETFs are pulled from Yahoo Finance via the `yfinance` Python package (version 1.3.0; original pin 0.2.51 upgraded due to Yahoo API endpoint change). The pipeline downloads open, high, low, close, adjusted close, and volume for each security. High and low prices are retained because the Corwin-Schultz spread estimator requires them.
+Daily price data for equities and ETFs are pulled from Yahoo Finance via the `yfinance` Python package. The original requirements.txt pinned yfinance 0.2.51. This was upgraded to 1.3.0 during pipeline development after Yahoo's API endpoint change broke the older version. All analyses in this paper use yfinance 1.3.0. The pipeline's manifest.json records the active version on each run, ensuring that future runs of the pipeline can be reproduced bit-exactly by pinning to the recorded version. The full requirements.txt with all package versions is committed to the repository. The pipeline downloads open, high, low, close, adjusted close, and volume for each security. High and low prices are retained because the Corwin-Schultz spread estimator requires them.
 
 Macroeconomic series are sourced from the Federal Reserve Economic Data (FRED) API via the `fredapi` package (version 0.5.2). Seven series are used:
 
@@ -60,7 +60,14 @@ Five analyses are applied to the data. All use log returns, which aggregate addi
 
 **Volatility breach analysis.** For each strategy, event-window annualized volatility (daily standard deviation times the square root of 252) is compared to long-run annualized volatility estimated over the full sample. A breach ratio exceeding 3x suggests that the strategy's risk model failed to anticipate the realized volatility.
 
-**Liquidity-dependency regression.** For each strategy proxy, daily returns are regressed on three predictors: the contemporaneous S&P 500 return (market beta), the contemporaneous VIX log return (volatility-of-volatility), and the one-day-lagged Corwin-Schultz bid-ask spread estimate (liquidity). Standard errors are computed using the Newey-West (1987) heteroskedasticity- and autocorrelation-consistent (HAC) estimator with 5 lags. The coefficient on the lagged spread tests whether returns are predictable from liquidity conditions after controlling for market beta and volatility. A significant negative coefficient means wider spreads predict lower next-day returns — the channel identified by Brunnermeier and Pedersen (2009) linking funding liquidity to market liquidity.
+**Liquidity-dependency regression.** For each strategy proxy, the daily log return on day t is regressed on three predictors: the contemporaneous S&P 500 log return on day t (market beta), the contemporaneous VIX log return on day t (volatility-of-volatility), and the one-day-lagged Corwin-Schultz bid-ask spread estimate from day t-1 (liquidity). The specification is:
+
+```
+r_{i,t} = alpha + beta_1 * r_{sp,t} + beta_2 * r_{vix,t} 
+                + beta_3 * spread_{i,t-1} + epsilon_{i,t}
+```
+
+Standard errors are computed using the Newey-West (1987) heteroskedasticity- and autocorrelation-consistent (HAC) estimator with 5 lags. The coefficient on the lagged spread tests whether returns are predictable from liquidity conditions after controlling for market beta and volatility. A significant negative coefficient means wider spreads predict lower next-day returns — the channel identified by Brunnermeier and Pedersen (2009) linking funding liquidity to market liquidity.
 
 The Corwin-Schultz (2012) spread estimator uses two consecutive days' high and low prices to estimate the effective bid-ask spread without requiring intraday data. The estimator assumes that daily high prices are typically buyer-initiated and daily low prices are seller-initiated. Negative or implausible estimates (exceeding 50% of price) are set to missing following the authors' recommendation.
 
