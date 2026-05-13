@@ -18,7 +18,7 @@ The common thread is that JPM's AI assists with *how* to trade, not *what* to tr
 
 **Architectural claim:** BlackRock's Aladdin platform performs factor-based risk decomposition using historical covariance matrices estimated over rolling windows. This architecture is *vulnerable* to regime breaks because correlations estimated on pre-crisis data systematically understate cross-asset comovement during stress. When multiple institutional clients run similar Aladdin-derived risk overlays, common-mode de-risking can amplify drawdowns.
 
-Aladdin's scale is difficult to overstate. BlackRock's Form 10-K for fiscal year 2025 reported total assets under management of $14.04 trillion ($14,041,518 million) as of 31 December 2024 (BlackRock 10-K FY2025, filed 25 February 2026); Aladdin technology services extend to approximately $25 trillion in assets across institutional clients [VERIFY - confirm Aladdin AuA against 10-K page reference]. The Financial Times described Aladdin as "the technology hub of modern finance" [VERIFY - confirm against Henderson and Walker, FT May 2020] (Henderson and Walker, 2020). The platform provides risk analytics, portfolio construction, and trade execution across equities, fixed income, and alternatives.
+Aladdin's scale is difficult to overstate. BlackRock's Form 10-K for fiscal year 2025 reported total assets under management of $14.04 trillion ($14,041,518 million) as of 31 December 2024 (BlackRock 10-K FY2025, filed 25 February 2026); Aladdin technology services extend to approximately $25 trillion in assets across institutional clients [VERIFY - confirm Aladdin AuA against 10-K page reference]. The platform's scale has drawn regulatory attention to systemic concentration risk. The UK Financial Conduct Authority (FCA, 2021) stated that the failure of a large portfolio and risk system such as Aladdin "could cause serious consumer harm" or "damage market integrity." In the United States, the Financial Stability Oversight Council examined whether risk-modelling firms warrant enhanced scrutiny, citing concerns that "financial firms may rely too heavily on the same outside risk models" (FSOC, 2014). These regulatory statements articulate the systemic concern that motivates this paper's empirical test: when a single risk platform overlays trillions in nominally diverse portfolios, correlated de-risking during stress is a mechanical consequence of shared inputs, not an emergent failure.
 
 For this study, BlackRock's architecture is observable through its iShares ETF family. IVV (Core S&P 500), AGG (Core U.S. Aggregate Bond), TLT (20+ Year Treasury), EEM (Emerging Markets), and HYG (High Yield Corporate Bond) are all Aladdin-overseen products whose daily returns are public. These products do not reflect Aladdin's *recommendations* to external clients, but they reflect the risk management framework that governs a substantial share of global indexed assets.
 
@@ -26,7 +26,8 @@ For this study, BlackRock's architecture is observable through its iShares ETF f
 
 **Citations:**
 - BlackRock, Inc. (2026). Form 10-K, fiscal year 2025. U.S. Securities and Exchange Commission. CIK 0002012383. https://www.sec.gov/Archives/edgar/data/0002012383/000119312526071966/blk-20251231.htm Filed February 25, 2026.
-- Henderson, R., & Walker, O. (2020, May). BlackRock's black box: the technology hub of modern finance. *Financial Times*. [VERIFY]
+- Financial Conduct Authority. (2021, January). Statement on portfolio and risk management systems. (Cited via Wikipedia, Aladdin (BlackRock), citing FCA correspondence) [VERIFY exact FCA publication and date during paper write-up].
+- Financial Stability Oversight Council. (2014). Annual report. U.S. Department of the Treasury. https://home.treasury.gov/policy-issues/financial-markets-financial-institutions-and-fiscal-service/fsoc
 
 ## 2.3 Bridgewater: regime-aware risk parity
 
@@ -76,11 +77,10 @@ Two Sigma's returns are private. This study uses a factor ETF basket — MTUM (m
 
 **Banned phrases found:** 0
 
-**[VERIFY] tags:** 6
+**[VERIFY] tags:** 5
 - JPMorgan 2024 Annual Report URL (1)
 - BlackRock 10-K Aladdin assets under analytics (1)
-- Henderson and Walker FT article quote (1)
-- Henderson and Walker FT citation (1)
+- FCA exact publication and date (1)
 - FT/Reuters Bridgewater Q1 2020 coverage (1)
 - Two Sigma research notes — specific titles (1)
-- **Resolved:** BlackRock AUM ($14.04T confirmed), BlackRock CIK (corrected to 0002012383), Two Sigma fund names (verified via Hedgeweek Jan 2025), Bloomberg article URL (confirmed)
+- **Resolved:** BlackRock AUM ($14.04T confirmed), BlackRock CIK (corrected to 0002012383), Two Sigma fund names (verified via Hedgeweek Jan 2025), Bloomberg article URL (confirmed), Henderson/Walker FT replaced with FCA/FSOC regulatory sources

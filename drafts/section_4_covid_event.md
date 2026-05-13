@@ -4,7 +4,7 @@
 
 The S&P 500 peaked at 3,386.15 on February 19, 2020, and bottomed at 2,237.40 on March 23, a -33.9% decline over 23 trading days [T1: ^GSPC, covid_2020, max_drawdown]. The Federal Reserve responded in three escalating interventions: a March 15 emergency rate cut to 0–0.25%, the March 17 launch of the Commercial Paper Funding Facility, and the March 23 announcement of unlimited Treasury and agency MBS purchases — which marked the bottom.
 
-This was specifically a credit-liquidity event, not merely an equity selloff. The ICE BofA U.S. High Yield Option-Adjusted Spread (FRED series BAMLH0A0HYM2) spiked above 1,100 basis points in late March [VERIFY — confirm peak date and level against FRED data]. Investment-grade corporate bond markets froze: dealers could not warehouse inventory, and ETF market-makers widened spreads or stopped quoting entirely. Treasury-equity correlations, normally negative (Treasuries rally when equities sell off), broke down as forced sellers liquidated across asset classes simultaneously. The Fed's March 23 intervention targeted credit markets directly — not equities — because the credit channel was the systemic threat.
+This was specifically a credit-liquidity event, not merely an equity selloff. The ICE BofA U.S. High Yield Option-Adjusted Spread (FRED series BAMLH0A0HYM2) spiked above 1,100 basis points in late March [VERIFY — confirm peak date and level against FRED data]. Investment-grade corporate bond markets froze: dealers could not warehouse inventory, and ETF market-makers widened spreads or stopped quoting entirely. This mechanism is documented in detail by Duffie (2023), who identifies dealer balance sheet capacity constraints as the binding friction during the March 2020 Treasury market dysfunction. Goldberg (2020) showed that the price of liquidity in the Treasury market rose sharply as dealer inventory capacity declined, with historical precedent suggesting persistent spillovers to corporate bond, equity, and MBS markets. Fleming and Ruela (2020) document the contemporaneous deterioration of Treasury market liquidity metrics during the period. Treasury-equity correlations, normally negative (Treasuries rally when equities sell off), broke down as forced sellers liquidated across asset classes simultaneously. The Fed's March 23 intervention targeted credit markets directly — not equities — because the credit channel was the systemic threat.
 
 ## 4.2 Per-firm drawdowns
 
@@ -60,6 +60,13 @@ Each architecture's 2020 performance can be evaluated against the testable hypot
 
 The credit-liquidity channel identified in Section 4.4 explains why these architecturally distinct strategies converged. They did not fail for the same reason — JPM lost money on its balance sheet, Bridgewater lost money because its diversification assumption broke, MTUM lost money because crowded positions were unwound. But they shared exposure to the same underlying mechanism: when U.S. credit liquidity froze, all roads led to the same forced-selling dynamic.
 
+**References cited in this section:**
+- Brunnermeier, M. K., & Pedersen, L. H. (2009). Market liquidity and funding liquidity. *Review of Financial Studies*, 22(6), 2201–2238.
+- Corwin, S. A., & Schultz, P. (2012). A simple way to estimate bid-ask spreads from daily high and low prices. *The Journal of Finance*, 67(2), 719–760.
+- Duffie, D. (2023). Resilience redux in the US Treasury market. Jackson Hole Economic Policy Symposium. Federal Reserve Bank of Kansas City. https://www.kansascityfed.org/Jackson%20Hole/documents/9726/JH_Paper_Duffie.pdf
+- Fleming, M., & Ruela, F. (2020, April 17). Treasury market liquidity during the COVID-19 crisis. *Liberty Street Economics*, Federal Reserve Bank of New York. https://libertystreeteconomics.newyorkfed.org/2020/04/treasury-market-liquidity-during-the-covid-19-crisis/
+- Goldberg, J. (2020, July 17). Dealer inventory constraints during the COVID-19 pandemic: Evidence from the Treasury market and broader implications. *FEDS Notes*, Board of Governors of the Federal Reserve System. https://www.federalreserve.gov/econres/notes/feds-notes/dealer-inventory-constraints-during-covid-19-pandemic-evidence-from-treasury-market-broader-implications-20200717.htm
+
 ---
 
 ## STYLE_AUDIT
@@ -83,3 +90,15 @@ The credit-liquidity channel identified in Section 4.4 explains why these archit
 - Mean sentence length: ~14.8 words
 - Standard deviation: ~8.6 words
 - Range: 3 to 44 words
+
+## VERIFICATION_LOG
+
+All numeric claims in this section have been verified against the underlying CSV files:
+- Drawdown figures (15 distinct values): table1_drawdowns.csv
+- Pair correlations (5 pairs across pre/event windows): table2_corr_covid_2020_pre.csv and table2_corr_covid_2020_event.csv
+- Event-window regression coefficients (5 strategies): table4b_liquidity_regression_by_window.csv
+
+External verification still required for:
+- BAMLH0A0HYM2 peak level and date in March 2020 (FRED)
+- Specific Federal Reserve announcement dates (March 15, 17, 23 2020)
+- Bridgewater All Weather Q1 2020 reported loss (FT/Reuters April 2020)

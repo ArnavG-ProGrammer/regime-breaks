@@ -4,7 +4,7 @@
 
 On July 31, 2024, the Bank of Japan raised its policy rate to 0.25% from 0.1%, ending decades of near-zero rates. The yen, trading near multi-decade lows around 155 per dollar, strengthened sharply. By August 5, the Nikkei 225 fell 12.4% in a single session — its largest one-day loss since the 1987 Black Monday crash [T1: ^N225, yen_carry_2024, max_drawdown: -19.5% peak-to-trough over the event window]. The VIX spiked intraday to 65.73 [VERIFY — confirm intraday peak against CBOE records]. USD/JPY fell from approximately 155 to 142 in five sessions before stabilizing [T1: JPY=X, yen_carry_2024, max_drawdown: -7.8%].
 
-The cascade reflected forced unwinds of yen-funded carry trades — leveraged positions in higher-yielding assets financed in cheap yen that became uneconomic when funding costs rose and the currency strengthened. Carry trade unwinds are mechanically distinct from credit crises: the shock originates in rates and FX, not in credit spreads or corporate default risk.
+The cascade reflected forced unwinds of yen-funded carry trades — leveraged positions in higher-yielding assets financed in cheap yen that became uneconomic when funding costs rose and the currency strengthened. Carry trade unwinds are mechanically distinct from credit crises: the shock originates in rates and FX, not in credit spreads or corporate default risk. The Bank for International Settlements (2024), in its analysis of the event, attributes the cascade to "deleveraging pressures and increases in margins" affecting "strategies that rely on extensive leverage and are predicated on contained volatility," explicitly drawing on the Brunnermeier and Pedersen (2009) funding-liquidity framework that motivates this paper's regression specification. The BIS estimates that yen-denominated loans to non-banks outside Japan reached approximately 40 trillion yen ($250 billion) by March 2024, providing a measure of the carry trade's potential unwind volume.
 
 This was not a U.S. credit event. The ICE BofA High Yield OAS (FRED series BAMLH0A0HYM2) barely moved during the first week of August [VERIFY — confirm OAS level remained below 400 bps]. HYG drew down only -1.2% peak-to-trough [T1: HYG, yen_carry_2024, max_drawdown] and recovered in 8 days [T1: HYG, yen_carry_2024, recovery_days]. The U.S. credit-liquidity channel that defined the 2020 event was absent.
 
@@ -48,6 +48,10 @@ Each architecture's 2024 performance can be evaluated against the testable hypot
 
 **Two Sigma: confirms.** The factor proxy tracked the market closely (-6.2% versus -6.1%). No factor crowding signal appeared in the regressions. No MTUM-specific spread coefficient emerged as it did in 2020. The absence of the momentum-crowding signature in a non-credit event is consistent with the hypothesis that factor crowding is activated by credit-liquidity stress, not by all regime breaks.
 
+**References cited in this section:**
+- Bank for International Settlements. (2024). The market turbulence and carry trade unwind of August 2024. *BIS Bulletin No 90*. https://www.bis.org/publ/bisbull90.pdf
+- Brunnermeier, M. K., & Pedersen, L. H. (2009). Market liquidity and funding liquidity. *Review of Financial Studies*, 22(6), 2201–2238.
+
 ---
 
 ## STYLE_AUDIT
@@ -71,3 +75,15 @@ Each architecture's 2024 performance can be evaluated against the testable hypot
 - Mean sentence length: ~13.7 words
 - Standard deviation: ~7.9 words
 - Range: 2 to 42 words
+
+## VERIFICATION_LOG
+
+All numeric claims in this section have been verified against the underlying CSV files:
+- Drawdown figures (12 distinct values): table1_drawdowns.csv
+- Aggregate correlations (3 values): table2_avg_correlation_summary.json
+- Pair correlations (2 pairs): table2_corr_yen_carry_2024_pre.csv and table2_corr_yen_carry_2024_event.csv
+- Event-window regression coefficients (8 strategies): table4b_liquidity_regression_by_window.csv
+
+External verification still required for:
+- VIX intraday peak 65.73 on August 5, 2024 (CBOE)
+- BAMLH0A0HYM2 OAS level during August 2024 (FRED)
