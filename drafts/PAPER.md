@@ -249,6 +249,8 @@ This was not a U.S. credit event. The ICE BofA High Yield OAS (FRED series BAMLH
 
 **Two Sigma factor proxy.** The factor basket fell -6.2%, tracking the S&P 500's -6.1% almost exactly, and took 14 days to recover. MTUM drew down -8.1% but recovered in 10 days. VLUE fell -7.9%. No factor in the basket showed disproportionate stress — consistent with a shock that did not trigger U.S. factor crowding dynamics.
 
+Figure 1 (yen carry 2024 panel) shows the per-firm drawdown magnitudes side by side. The contrast with the COVID 2020 panel (referenced in Section 4.3) is stark: every strategy's 2024 drawdown fits within a narrow band, whereas the 2020 drawdowns spanned a far wider range — reflecting the difference between a contained rates shock and a systemic credit-liquidity crisis. See fig1_drawdowns_yen_carry_2024.png.
+
 ### 5.3 Correlation regime shift
 
 Average off-diagonal correlation rose from 0.37 pre-event to 0.44 in the event window, a 19% increase — compared with the 98% increase observed in 2020. Post-event, correlations fell to 0.34, actually declining below the pre-event level. See Figure 2 (yen carry 2024 correlation heatmaps).
@@ -292,6 +294,8 @@ In March 2020, all four architectures suffered significant drawdowns. JPMorgan e
 In August 2024, the same architectures produced different outcomes. The S&P 500 fell -6.1%. JPMorgan equity lost -8.4%. The BlackRock products drew down modestly, except TLT (-11.1%), which reflected a structural repricing of global duration rather than liquidity stress. The Two Sigma factor proxy tracked the market almost exactly at -6.2%. And the Bridgewater replicator gained +0.9% over the event window. Average pairwise correlations rose only 19%, from 0.37 to 0.44, and fell below pre-event levels afterward. Strategies maintained their independence.
 
 The contrast between the two events is the paper's central finding. Two numbers summarize it: a 98% correlation increase in 2020 versus a 19% increase in 2024. This is not a generic "regime breaks cause correlated failure" result. The correlation convergence was specific to the credit-liquidity event.
+
+Figure 5 visualizes the cross-event architectural test directly. Each strategy proxy is plotted by its 2020 drawdown (x-axis) against its 2024 drawdown (y-axis). Strategies on or near the 45-degree line fell roughly equally in both events — a generic-stress pattern. Strategies far from the line fell asymmetrically. The Bridgewater replicator is the clearest outlier: -15.7% in 2020 versus +0.9% in 2024 places it deep in the architectural-differentiation quadrant. JPMorgan equity, by contrast, sits close to the line — both events hit it through the same channel (balance-sheet credit exposure amplification). See fig5_cross_event_scatter.png.
 
 ### 6.2 The credit-liquidity mechanism
 
