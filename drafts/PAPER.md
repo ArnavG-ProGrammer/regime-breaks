@@ -79,7 +79,9 @@ When markets break, do architecturally distinct AI and quantitative strategies f
    - 7.1 Sample size
    - 7.2 Proxy limitations
    - 7.3 Statistical power
-   - 7.4 Falsification scope
+   - 7.4 Identification limitations
+   - 7.5 Robustness considerations
+   - 7.6 Falsification scope
 8. Conclusion
 
 Acknowledgments
@@ -89,6 +91,8 @@ References
 Appendix A: Open Verification Tags
 
 Appendix B: Reproducibility
+
+Appendix C: Data Sources
 
 \newpage
 
@@ -724,3 +728,43 @@ Anyone with a Python 3.12+ environment and a free FRED API key (available at htt
 6. `python analysis.py` (generates all tables and figures, takes approximately 30 seconds)
 
 Outputs land in `outputs/tables/` (CSV and JSON) and `outputs/figures/` (PNG).
+
+The manifest.json file records precise package versions and the FRED data-fetch date. Since FRED data are not retroactively revised for the series used in this paper, fetches on any subsequent date produce identical numerical values for the dates in the event windows.
+
+---
+
+## Appendix C: Data Sources
+
+**Table 7.** Data sources by strategy proxy. All series are publicly available. Frequency is daily unless otherwise noted. Date range covers both event windows plus 90 trading days before and after each.
+
+| Proxy / Series | Source | Ticker / Series ID | Frequency | Coverage |
+|----------------|--------|--------------------|-----------|----------|
+| JPMorgan Chase equity | Yahoo Finance | JPM | daily | 2019-10-01 to 2024-12-13 |
+| JEPI ETF | Yahoo Finance | JEPI | daily | 2020-05-21 onward |
+| JEPQ ETF | Yahoo Finance | JEPQ | daily | 2022-05-04 onward |
+| BlackRock equity | Yahoo Finance | BLK | daily | 2019-10-01 to 2024-12-13 |
+| iShares S&P 500 | Yahoo Finance | IVV | daily | 2019-10-01 to 2024-12-13 |
+| iShares Aggregate Bond | Yahoo Finance | AGG | daily | 2019-10-01 to 2024-12-13 |
+| iShares 20+ Year Treasury | Yahoo Finance | TLT | daily | 2019-10-01 to 2024-12-13 |
+| iShares High Yield Corporate | Yahoo Finance | HYG | daily | 2019-10-01 to 2024-12-13 |
+| iShares Emerging Markets | Yahoo Finance | EEM | daily | 2019-10-01 to 2024-12-13 |
+| iShares TIPS | Yahoo Finance | TIP | daily | 2019-10-01 to 2024-12-13 |
+| Invesco DB Commodity | Yahoo Finance | DBC | daily | 2019-10-01 to 2024-12-13 |
+| SPDR Gold | Yahoo Finance | GLD | daily | 2019-10-01 to 2024-12-13 |
+| iShares MSCI Momentum | Yahoo Finance | MTUM | daily | 2019-10-01 to 2024-12-13 |
+| iShares MSCI Value | Yahoo Finance | VLUE | daily | 2019-10-01 to 2024-12-13 |
+| iShares MSCI Quality | Yahoo Finance | QUAL | daily | 2019-10-01 to 2024-12-13 |
+| iShares MSCI Min Vol | Yahoo Finance | USMV | daily | 2019-10-01 to 2024-12-13 |
+| iMGP DBi Managed Futures | Yahoo Finance | DBMF | daily | 2019-10-01 to 2024-12-13 |
+| Bridgewater replicator | Constructed (IVV, TLT, TIP, DBC, GLD) | see Section 3.4 | daily | 2019-10-01 to 2024-12-13 |
+| Two Sigma factor proxy | Equal-weight basket (MTUM, VLUE, QUAL, USMV, DBMF) | see Section 3.4 | daily | 2019-10-01 to 2024-12-13 |
+| Nikkei 225 | Yahoo Finance | ^N225 | daily | 2024-04-01 to 2024-12-13 |
+| VIX | Yahoo Finance + FRED | ^VIX, VIXCLS | daily | 2019-10-01 to 2024-12-13 |
+| Fed Funds Rate | FRED | DFF | daily | 2019-10-01 to 2024-12-13 |
+| 10-Year Treasury | FRED | DGS10 | daily | 2019-10-01 to 2024-12-13 |
+| 2-Year Treasury | FRED | DGS2 | daily | 2019-10-01 to 2024-12-13 |
+| ICE BofA HY OAS | FRED | BAMLH0A0HYM2 | daily | 2019-10-01 to 2024-12-13 |
+| ICE BofA BBB OAS | FRED | BAMLC0A4CBBB | daily | 2019-10-01 to 2024-12-13 |
+| USD/JPY | FRED + Yahoo | DEXJPUS, JPY=X | daily | 2019-10-01 to 2024-12-13 |
+
+All raw downloads cached locally and hashed with SHA-256. See `data/manifest.json` in the repository.
