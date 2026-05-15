@@ -559,7 +559,29 @@ The Corwin-Schultz (2012) spread estimator, while established in the market micr
 
 The full-sample liquidity regression (Analysis 4a) has more power but cannot distinguish event-specific mechanisms. The event-window regression (Analysis 4b) can distinguish mechanisms but lacks power. This trade-off is inherent in event study designs with short event windows.
 
-### 7.4 Falsification scope
+### 7.4 Identification limitations
+
+This paper documents empirical regularities across two regime breaks. It does not establish causal identification. The event-window regressions show that lagged bid-ask spreads predict next-day returns during the 2020 credit event, but the regression specification cannot rule out reverse causality (falling prices widen spreads, which then predict further price declines) or omitted-variable bias (an unobserved third factor, such as dealer inventory capacity, drives both spreads and returns simultaneously). Establishing causation would require instrumental variables for funding liquidity that are plausibly exogenous to contemporaneous asset returns, a standard that daily-frequency public data cannot meet.
+
+The simultaneous-equation concern is particularly relevant. In the Brunnermeier and Pedersen (2009) model, market liquidity and funding liquidity are jointly determined. The lagged spread partially addresses this by using day t-1 information to predict day t returns, but one-day lags may be insufficient if the feedback loop operates at intraday frequency. Intraday or transaction-level data on institutional positioning, margin calls, and dealer inventory would be needed to disentangle the direction of causation.
+
+The proxy-based design introduces a further identification challenge. The Bridgewater replicator and Two Sigma factor proxy measure the returns of publicly available ETFs, not the actual institutional portfolios. A significant regression coefficient on MTUM tells us that momentum-factor ETF returns were predictable from spreads; it does not prove that Two Sigma's internal positions experienced the same dynamic. The inference from proxy to institution requires an assumption of directional alignment that is supported by construction (Section 3.4) but not verified against actual fund returns.
+
+### 7.5 Robustness considerations
+
+Several robustness checks would strengthen the findings but lie beyond the scope of this two-event study.
+
+First, placebo event windows: running the same regression specification on randomly selected 22-day windows during non-crisis periods would establish a baseline distribution of spread coefficients under the null hypothesis of no liquidity-driven forced selling. If the 2020 coefficients fall in the extreme tail of the placebo distribution, the result is more convincing than a simple p-value comparison.
+
+Second, subsample analysis: splitting the 2020 event window at the March 15 Fed emergency rate cut would test whether the spread-return relationship was stronger before or after the intervention. If the coefficient weakens after the Fed acted, it supports the interpretation that the channel was credit-liquidity stress rather than generic panic.
+
+Third, alternative spread estimators: replacing Corwin-Schultz with the Abdi and Ranaldo (2017) close-high-low-close estimator or the Roll (1984) implied spread would test whether the results are robust to estimator choice.
+
+Fourth, bootstrap inference: block-bootstrapping the event-window regressions with replacement would provide confidence intervals that do not rely on the Newey-West asymptotic approximation, which may be unreliable with 22-42 observations.
+
+Fifth, multiple-testing corrections: applying Benjamini-Hochberg false discovery rate control across all strategy-event pairs would address the concern that the significant 2020 coefficients could be false positives from multiple comparisons.
+
+### 7.6 Falsification scope
 
 The credit-liquidity hypothesis survives a single falsification test: the 2024 yen carry unwind did not produce the regression signature observed in 2020. The non-result is consistent with the hypothesis but does not prove it. Alternative explanations, including event duration, shock magnitude, and geographic scope, remain viable.
 
