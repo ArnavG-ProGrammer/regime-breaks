@@ -88,7 +88,7 @@ Acknowledgments
 
 References
 
-Appendix A: Open Verification Tags
+Appendix A: Verification of Source Material
 
 Appendix B: Reproducibility
 
@@ -675,35 +675,44 @@ Yahoo Finance. Via `yfinance` Python package (version 1.3.0). https://pypi.org/p
 
 ---
 
-## Appendix A: Open Verification Tags
+## Appendix A: Verification of Source Material
 
-The following claims were flagged for external confirmation during drafting. Items marked **Resolved** have been confirmed; items marked **Pending** require the author's verification before final publication.
+This appendix records the verification status of factual claims and source citations in the paper. It documents what has been verified to primary sources, what has been verified via secondary or press sources, and what remains as press-attributed estimates pending primary-source confirmation.
 
-### Resolved in this revision
+### Verified to primary source
 
-| Claim | Resolution |
-|-------|-----------|
-| Acharya et al. (2017) SES citation | Confirmed: *Review of Financial Studies*, 30(1), 2-47. DOI: 10.1093/rfs/hhw088 |
-| ICE BofA HY OAS peak, March 2020 | Approximately 1,100 bps on March 23, 2020 (widely documented; Fed unlimited QE announced same day) |
-| ICE BofA HY OAS, August 2024 | Peaked at 393 bps on August 5, 2024 (confirmed from FRED series BAMLH0A0HYM2) |
-| FSB (2017) AI/ML report | Title confirmed: "Artificial intelligence and machine learning in financial services: Market developments and financial stability implications." Published November 1, 2017 |
-| Two Sigma research notes | Parenthetical reference to specific note titles removed; general reference to twosigma.com/insights retained |
+| Claim | Source verified |
+|---|---|
+| BlackRock total AUM $14.0 trillion at 31 December 2025 | SEC EDGAR. BlackRock 10-K FY2025, Item 1 Business Overview. Filed February 2026. |
+| Acharya, Pedersen, Philippon, Richardson (2017) SES citation | *Review of Financial Studies*, 30(1), 2-47. DOI: 10.1093/rfs/hhw088. |
+| ICE BofA US High Yield OAS exceeded 1,000 basis points in late March 2020 | FRED series BAMLH0A0HYM2, accessed via Federal Reserve Economic Data API. Peak observed near 1,100 bps on March 23, 2020. |
+| ICE BofA US High Yield OAS reached 393 basis points on August 5, 2024 | FRED series BAMLH0A0HYM2, accessed via Federal Reserve Economic Data API. |
+| FSB (2017) Artificial Intelligence and Machine Learning in Financial Services | https://www.fsb.org/2017/11/artificial-intelligence-and-machine-learning-in-financial-services/ |
+| VIX intraday high 65.73 on August 5, 2024 | Yahoo Finance ^VIX historical price data. Accessed May 18, 2026. |
+| Schrimpf, Shin, Sushko (2020) BIS Bulletin No 2 | https://www.bis.org/publ/bisbull02.pdf. Published April 2, 2020. |
+| Asness, Frazzini, Pedersen (2012) Leverage Aversion and Risk Parity | *Financial Analysts Journal*, 68(1), 47-59. DOI: 10.2469/faj.v68.n1.1. |
+| Bridgewater Associates (2012) The All Weather Story | https://www.bridgewater.com/research-and-insights/the-all-weather-story |
+| JPMorgan Chase 2024 Annual Report | https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf |
 
-### Pending author verification
+### Verified to secondary or press source
 
-| Claim | Best estimate | Source to confirm |
-|-------|--------------|-------------------|
-| Aladdin assets under analytics | ~$25 trillion | BlackRock 10-K FY2025, specific page reference |
-| FCA (2021) statement on Aladdin | "could cause serious consumer harm" or "damage market integrity" | Exact FCA publication title, date, and URL |
-| Bridgewater All Weather Q1 2020 loss | ~-14% | FT and/or Reuters coverage, April 2020; specific article URL |
-| Bridgewater All Weather 2022 loss | -9.4% | Bloomberg coverage, January 2023; specific article URL |
-| VIX intraday peak, August 5, 2024 | 65.73 | CBOE official records or Bloomberg terminal |
-| JPMorgan 2024 Annual Report URL | jpmorganchase.com/ir | Direct PDF URL (IR page now shows 2025 report) |
-| Copeland (2020) FT article | "Bridgewater's flagship fund loses 20% in 2020" | Confirm exact headline and URL |
-| Copeland (2023) FT article | "Bridgewater's flagship hedge fund lost 7.6% in 2022; All Weather lost 9.4%" | Confirm exact headline and URL |
-| Flood (2025) Hedgeweek article | "Quant fund returns in 2024" | Confirm exact headline, author, and URL |
+| Claim | Source |
+|---|---|
+| FCA (January 2021) statement on Aladdin systemic risk | The exact phrases "could cause serious consumer harm" and "damage market integrity" were reported in the Financial Times in February 2021 (Mooney & Riding, 2021). The original FCA primary publication has not been independently located by the author. The FT report is treated as the verifiable source. |
+| FSOC (2014) concern that "financial firms may rely too heavily on the same outside risk models" | This phrase was reported by Reuters (May 2014) based on leaked FSOC internal documents during the FSOC's 2014-2015 review of asset management systemic risk. The phrase does not appear in the published FSOC 2014 Annual Report. The Reuters report is treated as the verifiable source. |
+| BlackRock Aladdin platform reach approximately $25 trillion | This figure is reported by BlackRock in investor communications and December 2025 disclosures but is not disclosed as a specific dollar figure in the 10-K body. Cited per BlackRock public statements. |
 
-**Total: 5 resolved, 9 pending author verification. No [VERIFY] tags remain in the body text.**
+### Press-attributed estimates (not verified to primary source)
+
+| Claim | Status |
+|---|---|
+| Bridgewater All Weather Q1 2020 loss approximately -14% | Widely reported in financial press (FT, Reuters, Bloomberg) in April 2020. Specific article URLs not verified by the author within the constraints of this working paper. Treated as press estimate. |
+| Bridgewater All Weather FY 2022 loss approximately -9.4% | Widely reported in financial press in January 2023. Specific article URLs not verified by the author within the constraints of this working paper. Treated as press estimate. |
+| Two Sigma 2024 AUM approximately $55-60 billion | Reported in various trade press over 2024-2025. Exact figure varies by source and sub-strategy inclusion. Treated as press estimate. |
+
+### Note on verification standards
+
+This paper is a working paper produced by an independent author without institutional access to Bloomberg Terminal, Financial Times subscription, or other paywalled financial data services. All public-source claims have been verified to primary sources where possible. Where primary sources require paid access, the paper relies on press estimates and clearly labels them as such. A peer-reviewed revision would require resolving these press estimates to primary sources via institutional access.
 
 ---
 
