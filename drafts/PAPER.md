@@ -643,7 +643,7 @@ Mooney, A., & Riding, S. (2021, February 16). BlackRock's Aladdin under scrutiny
 
 Financial Stability Board. (2017). Artificial intelligence and machine learning in financial services: Market developments and financial stability implications. Basel: FSB. https://www.fsb.org/2017/11/artificial-intelligence-and-machine-learning-in-financial-services/
 
-Financial Stability Oversight Council. (2014). *Annual report*. Washington, DC: U.S. Department of the Treasury. https://home.treasury.gov/policy-issues/financial-markets-financial-institutions-and-fiscal-service/fsoc
+Reuters. (2014, May 16). Exclusive: Regulators scrutinize financial risk-modeling firms. *Reuters*. Based on leaked Financial Stability Oversight Council internal documents during the 2014-2015 review of asset management systemic risk.
 
 ### Federal Reserve publications
 
