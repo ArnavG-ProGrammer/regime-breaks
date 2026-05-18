@@ -385,7 +385,7 @@ Each architecture's 2020 performance can be evaluated against the testable hypot
 
 **JPMorgan: hypothesis confirmed.** Balance-sheet credit exposure produced the excess drawdown (-42.5% versus S&P -33.9%), not AI or model failure. The execution-layer architecture is insensitive to regime breaks because the AI operates below the level of portfolio positioning.
 
-**BlackRock: hypothesis confirmed.** Aladdin-overseen products showed correlated drawdowns across nominally diverse asset classes. IVV tracked the index; AGG and TLT broke from their normal negative equity correlation; HYG, EEM, and equities moved together with near-unity correlation. This is consistent with a shared risk-model framework in which factor-covariance estimates trained on pre-crisis data understated cross-asset comovement during stress.
+**BlackRock: hypothesis confirmed.** BlackRock-managed products showed correlated drawdowns across nominally diverse asset classes. IVV tracked the index; AGG and TLT broke from their normal negative equity correlation; HYG, EEM, and equities moved together with near-unity correlation. This is consistent with a shared risk-model framework in which factor-covariance estimates trained on pre-crisis data understated cross-asset comovement during stress.
 
 **Bridgewater: hypothesis confirmed.** Risk parity broke when bond-equity correlation inverted, the specific architectural vulnerability identified in Section 2.3. The replicator's -15.7% drawdown matches the direction and approximate magnitude of the fund's disclosed Q1 2020 loss (-14%). The 135-day recovery reflects the persistent nature of the correlation break.
 
