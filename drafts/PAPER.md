@@ -639,7 +639,7 @@ Bridgewater Associates. (2012). The All Weather story: How Bridgewater Associate
 
 Schrimpf, A., Shin, H. S., & Sushko, V. (2020). Leverage and margin spirals in fixed income markets during the Covid-19 crisis. *BIS Bulletin No 2*. Bank for International Settlements. https://www.bis.org/publ/bisbull02.pdf
 
-Financial Conduct Authority. (2021). Statement on portfolio and risk management systems. London: FCA.
+Mooney, A., & Riding, S. (2021, February 16). BlackRock's Aladdin under scrutiny for crowding risk as assets pass $20tn. *Financial Times*.
 
 Financial Stability Board. (2017). Artificial intelligence and machine learning in financial services: Market developments and financial stability implications. Basel: FSB. https://www.fsb.org/2017/11/artificial-intelligence-and-machine-learning-in-financial-services/
 
