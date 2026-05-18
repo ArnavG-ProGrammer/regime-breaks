@@ -477,7 +477,7 @@ Each architecture's 2024 performance can be evaluated against the testable hypot
 
 **JPMorgan: confirms.** The modest excess over the S&P (-8.4% versus -6.1%) is consistent with balance-sheet sensitivity, not AI failure. JEPI and JEPQ, observable for the first time in a stress event, behaved within normal parameters.
 
-**BlackRock: confirms in the negative direction.** Correlations among Aladdin-overseen products rose less than in 2020 because the shared risk model was not activated by this type of shock. TLT's -11.1% drawdown reflects a structural rates repricing, not a failure of risk management.
+**BlackRock: confirms in the negative direction.** Correlations among BlackRock-managed products rose less than in 2020 because the shared risk model was not activated by this type of shock. TLT's -11.1% drawdown reflects a structural rates repricing, not a failure of risk management.
 
 **Bridgewater: strongly confirms.** The contrast between -15.7% in 2020 and +0.9% in 2024 is the cleanest architectural differentiation in the paper. Risk parity broke when its diversification assumption broke (2020) and held when that assumption was preserved (2024). This is not luck; it is the architectural prediction performing as specified.
 
