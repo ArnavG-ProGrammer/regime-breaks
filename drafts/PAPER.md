@@ -615,6 +615,8 @@ All data come from public sources (Yahoo Finance, FRED, SEC EDGAR). All computat
 
 Acharya, V. V., Pedersen, L. H., Philippon, T., & Richardson, M. (2017). Measuring systemic risk. *Review of Financial Studies*, 30(1), 2-47. https://doi.org/10.1093/rfs/hhw088
 
+Asness, C. S., Frazzini, A., & Pedersen, L. H. (2012). Leverage aversion and risk parity. *Financial Analysts Journal*, 68(1), 47-59. https://doi.org/10.2469/faj.v68.n1.1
+
 Adrian, T., & Brunnermeier, M. K. (2016). CoVaR. *American Economic Review*, 106(7), 1705-1741. https://doi.org/10.1257/aer.20120555
 
 Brunnermeier, M. K., & Pedersen, L. H. (2009). Market liquidity and funding liquidity. *Review of Financial Studies*, 22(6), 2201-2238. https://doi.org/10.1093/rfs/hhn098
@@ -627,15 +629,15 @@ Newey, W. K., & West, K. D. (1987). A simple, positive semi-definite, heterosked
 
 ### Books
 
-Dalio, R. (2017). *Principles*. Simon & Schuster.
-
-Patterson, S. (2010). *The Quants: How a New Breed of Math Whizzes Conquered Wall Street and Nearly Destroyed It*. Crown Business.
-
 Wigglesworth, R. (2021). *Trillions: How a Band of Wall Street Renegades Invented the Index Fund and Changed Finance Forever*. Penguin Business.
 
 ### Regulatory and central bank publications
 
 Bank for International Settlements. (2024). The market turbulence and carry trade unwind of August 2024. *BIS Bulletin No 90*. https://www.bis.org/publ/bisbull90.pdf
+
+Bridgewater Associates. (2012). The All Weather story: How Bridgewater Associates created the All Weather investment strategy. Westport, CT: Bridgewater Associates. https://www.bridgewater.com/research-and-insights/the-all-weather-story
+
+Schrimpf, A., Shin, H. S., & Sushko, V. (2020). Leverage and margin spirals in fixed income markets during the Covid-19 crisis. *BIS Bulletin No 2*. Bank for International Settlements. https://www.bis.org/publ/bisbull02.pdf
 
 Financial Conduct Authority. (2021). Statement on portfolio and risk management systems. London: FCA.
 
