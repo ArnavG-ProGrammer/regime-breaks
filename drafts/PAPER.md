@@ -657,7 +657,7 @@ Goldberg, J. (2020, July 17). Dealer inventory constraints during the COVID-19 p
 
 BlackRock, Inc. (2026). Form 10-K, fiscal year 2025. U.S. Securities and Exchange Commission. CIK 0002012383. https://www.sec.gov/Archives/edgar/data/0002012383/000119312526071966/blk-20251231.htm
 
-JPMorgan Chase & Co. (2025). 2024 Annual Report. jpmorganchase.com/ir
+JPMorgan Chase & Co. (2025). 2024 Annual Report. JPMorgan Chase Investor Relations. https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/annualreport-2024.pdf
 
 ### Journalism
 
