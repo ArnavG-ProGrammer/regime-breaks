@@ -661,11 +661,9 @@ JPMorgan Chase & Co. (2025). 2024 Annual Report. jpmorganchase.com/ir
 
 ### Journalism
 
-Copeland, R. (2020, April 7). Bridgewater's flagship fund loses 20% in 2020. *Financial Times*.
+Financial press (April 2020). Reporting on Bridgewater Pure Alpha and All Weather Q1 2020 returns appeared across the Financial Times, Reuters, and Bloomberg in early April 2020. The author has not verified specific article URLs to primary source.
 
-Copeland, R. (2023, January 4). Bridgewater's flagship hedge fund lost 7.6% in 2022; All Weather lost 9.4%. *Financial Times*.
-
-Flood, C. (2025, January 10). Quant fund returns in 2024: Two Sigma and Renaissance among top performers. *Hedgeweek*.
+Financial press (January 2023). Reporting on Bridgewater Pure Alpha and All Weather full-year 2022 returns appeared in Bloomberg and the Financial Times in early January 2023. The author has not verified specific article URLs to primary source.
 
 Son, H. (2017, February 28). JPMorgan marshals an army of developers to automate high finance. *Bloomberg*. https://www.bloomberg.com/news/articles/2017-02-28/jpmorgan-marshals-an-army-of-developers-to-automate-high-finance
 
