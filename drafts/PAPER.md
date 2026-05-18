@@ -152,7 +152,7 @@ JPMorgan's public AI footprint is concentrated in three areas. First, COiN (Cont
 
 The common thread is that JPM's AI assists with *how* to trade, not *what* to trade. The firm's risk positions, including credit exposure, loan books, and proprietary trading, remain discretionary. JPM equity therefore reflects bank balance-sheet fundamentals (loan-loss provisions, mark-to-market on trading books) rather than AI-driven positioning errors.
 
-**Testable hypothesis:** JPM equity should behave like a leveraged beta exposure in both events, with drawdowns exceeding the S&P 500 due to credit-cycle amplification rather than model-driven failure. The empirical results confirm this: JPM fell -42.5% versus the S&P's -33.9% in 2020 and -8.4% versus -6.1% in 2024, consistent excess driven by balance-sheet exposure, not AI architecture.
+**Testable hypothesis:** JPM equity should behave like a leveraged beta exposure in both events, with drawdowns exceeding the S&P 500 due to credit-cycle amplification. This hypothesis is evaluated against the 2020 and 2024 event data in Sections 4.5 and 5.5.
 
 ### 2.2 BlackRock: factor-covariance risk models (Aladdin)
 
@@ -162,7 +162,7 @@ Aladdin's scale is difficult to overstate. BlackRock's Form 10-K for fiscal year
 
 For this study, BlackRock's architecture is observable through its iShares ETF family. IVV (Core S&P 500), AGG (Core U.S. Aggregate Bond), TLT (20+ Year Treasury), EEM (Emerging Markets), and HYG (High Yield Corporate Bond) are all Aladdin-overseen products whose daily returns are public. These products do not reflect Aladdin's *recommendations* to external clients, but they reflect the risk management framework that governs a substantial share of global indexed assets.
 
-**Testable hypothesis:** Aladdin-overseen products should exhibit high cross-correlation during stress, the signature of a shared risk model. In March 2020, IVV tracked the S&P almost exactly (-33.9%), while AGG (-9.6%) and TLT (-15.7%) broke from their normal negative correlation with equities. The empirical data show average off-diagonal correlation jumping from 0.25 to 0.50, consistent with the hypothesis that factor-covariance models trained on pre-crisis data produced correlated risk signals across nominally diverse products.
+**Testable hypothesis:** BlackRock-managed products should exhibit high cross-correlation during stress, consistent with shared risk-model influence. A caveat: iShares ETFs are index-tracking products, so much of their behavior reflects underlying index methodology rather than active Aladdin recommendations. The test in Section 4.3 addresses whether stress-period correlations rise beyond what index-tracking alone would predict.
 
 ### 2.3 Bridgewater: regime-aware risk parity
 
@@ -172,7 +172,7 @@ All Weather was designed by Ray Dalio and colleagues in the 1990s as a portfolio
 
 All Weather's returns are private. The fund reportedly lost approximately -14% in Q1 2020 (FT and Reuters, April 2020), substantially exceeding its stated annualized volatility target of approximately 10-12%. For full-year 2022, Bloomberg reported a loss of -9.4% (January 2023). Pure Alpha, Bridgewater's actively managed macro fund, operates on different principles and is excluded from this analysis. This study uses a risk-parity replicator (described in Section 3.4) as a daily-frequency proxy for All Weather's broad risk profile. The replicator is validated against press-disclosed returns with a cross-period correlation of r=0.75 across four reference periods.
 
-**Testable hypothesis:** Risk parity should break during events that cause simultaneous selloffs across equities and bonds (positive correlation), but should remain resilient during events that preserve the cross-asset diversification structure. The empirical results support this: the replicator drew down -15.7% in March 2020 (when Treasury-equity correlations briefly turned positive) but gained +0.9% during the August 2024 yen carry unwind (when the shock was rates-driven but did not break the bond-equity diversification assumption).
+**Testable hypothesis:** Risk parity should break during events that cause simultaneous selloffs across equities and bonds (positive correlation) but should remain resilient during events that preserve the cross-asset diversification structure. This hypothesis is consistent with prior critiques of risk parity by Asness, Frazzini, and Pedersen (2012) and tested against the 2020 and 2024 event data in Sections 4.5 and 5.5.
 
 ### 2.4 Two Sigma: multi-factor systematic strategies
 
@@ -182,7 +182,7 @@ Two Sigma was founded in 2001 by David Siegel and John Overdeck, who served as c
 
 Two Sigma's returns are private. This study uses a factor ETF basket, MTUM (momentum), VLUE (value), QUAL (quality), USMV (minimum volatility), plus DBMF (managed futures, replicating the SocGen CTA Index), as a systematic factor proxy. The basket captures the broad exposure profile of a diversified multi-factor systematic shop. It does not capture Two Sigma's specific alpha, leverage, or dynamic hedging. The proxy is transparent about what it measures: the performance of publicly available systematic factor exposure, which serves as a lower bound on what a sophisticated systematic firm would achieve.
 
-**Testable hypothesis:** Multi-factor systematic strategies should underperform during broad credit events (when factor crowding forces simultaneous unwinds across many quant shops) but recover faster than discretionary strategies due to shorter signal half-lives. In geographically concentrated events that do not trigger U.S. factor unwinds, the architecture should track the market closely. The empirical data are consistent: the Two Sigma proxy lost -30.1% in 2020 (slightly better than the S&P's -33.9%) but -6.2% in 2024 (tracking the S&P's -6.1% almost exactly). The 2020 event-window regression provides direct empirical support for the factor-crowding hypothesis: MTUM's lagged Corwin-Schultz spread coefficient was significantly negative (beta=-0.13, t=-2.82, p=0.005), indicating that momentum-factor returns suffered predictably when bid-ask spreads widened, the signature of forced unwinds in crowded systematic positioning. No comparable signal appeared in the 2024 event window.
+**Testable hypothesis:** Within the factor proxy, momentum exposure (MTUM) should show evidence of factor crowding during broad credit events but not during geographically concentrated events. This hypothesis is tested against the 2020 and 2024 event data in Section 4.4 and Section 5.4. A measurement caveat is noted in Section 4.4: MTUM holds equities that have had high recent returns, and its 2020 drawdown could reflect either factor crowding or simple holdings-level exposure to growth and quality stocks that fell during the COVID panic. The proxy cannot fully separate these two interpretations.
 
 ### 2.5 Summary of testable hypotheses
 
