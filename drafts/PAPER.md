@@ -188,7 +188,7 @@ Two Sigma's returns are private. This study uses a factor ETF basket, MTUM (mome
 
 ### 2.5 Summary of testable hypotheses
 
-The four architectures generate distinct, falsifiable predictions about how each firm's strategies should behave during regime breaks. Table 1 summarizes the architectural claims, the testable hypothesis derived from each, and the section where each is evaluated empirically.
+The four architectures suggest distinct predictions about how each firm's strategies should behave during regime breaks. Table 1 summarizes the architectural claims, the associated hypothesis, and the section where each is examined empirically. As noted at the start of this section, these hypotheses were refined during analysis rather than pre-registered; Table 1 should be read as an organizing framework for the empirical sections rather than as a set of pre-committed predictions.
 
 **Table 1.** Summary of testable hypotheses by institutional architecture.
 
