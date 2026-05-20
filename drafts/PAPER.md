@@ -144,6 +144,8 @@ This paper makes three contributions. First, it provides a comparative empirical
 
 ## Section 2: Background and Architecture Taxonomy
 
+This section develops the architectural framework that organizes the empirical analysis. A note on method: the hypotheses below were refined iteratively during the research process rather than pre-registered before data collection. The architectural distinctions (execution-layer versus risk-model versus risk-parity versus signal-layer) were specified first, but the specific predictions about how each architecture would behave under stress were sharpened as the empirical patterns became visible during pipeline construction. This paper is therefore exploratory rather than confirmatory: it documents patterns across two regime breaks and proposes a mechanism consistent with them, rather than testing pre-committed predictions. Section 7 discusses the implications of this for the strength of the inference.
+
 ### 2.1 JPMorgan: execution-layer AI on a discretionary mandate
 
 **Architectural claim:** JPMorgan deploys AI at the *execution* layer, including order routing, liquidity prediction, and contract parsing, while investment decisions remain human-directed. This architecture should be insensitive to regime breaks, because microstructure-layer optimization does not depend on the stability of cross-asset covariance matrices.
