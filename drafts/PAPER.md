@@ -567,7 +567,11 @@ The Corwin-Schultz (2012) spread estimator, while established in the market micr
 
 The full-sample liquidity regression (Analysis 4a) has more power but cannot distinguish event-specific mechanisms. The event-window regression (Analysis 4b) can distinguish mechanisms but lacks power. This trade-off is inherent in event study designs with short event windows.
 
-### 7.4 Identification limitations
+### 7.4 Exploratory rather than confirmatory design
+
+The hypotheses in Section 2 were developed iteratively as the empirical patterns became visible during pipeline construction, not pre-registered before data collection. The architectural taxonomy (execution-layer, risk-model, risk-parity, signal-layer) was specified in advance, but the specific stress-behavior predictions for each architecture were refined after observing the 2020 and 2024 data. This means the paper documents and rationalizes patterns rather than testing pre-committed predictions. The 2024 yen carry event provides a partial check on this concern: because the credit-liquidity regression signature was specified from the 2020 analysis and then found absent in 2024, the 2024 result functions as a quasi-out-of-sample test even though it was not formally pre-registered. A genuinely confirmatory version of this study would pre-register the hypotheses and test them on events that occur after registration. This is the appropriate next step for the research program.
+
+### 7.5 Identification limitations
 
 This paper documents empirical regularities across two regime breaks. It does not establish causal identification. The event-window regressions show that lagged bid-ask spreads predict next-day returns during the 2020 credit event, but the regression specification cannot rule out reverse causality (falling prices widen spreads, which then predict further price declines) or omitted-variable bias (an unobserved third factor, such as dealer inventory capacity, drives both spreads and returns simultaneously). Establishing causation would require instrumental variables for funding liquidity that are plausibly exogenous to contemporaneous asset returns, a standard that daily-frequency public data cannot meet.
 
