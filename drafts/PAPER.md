@@ -79,9 +79,10 @@ When markets break, do architecturally distinct AI and quantitative strategies f
    - 7.1 Sample size
    - 7.2 Proxy limitations
    - 7.3 Statistical power
-   - 7.4 Identification limitations
-   - 7.5 Robustness considerations
-   - 7.6 Falsification scope
+   - 7.4 Exploratory rather than confirmatory design
+   - 7.5 Identification limitations
+   - 7.6 Robustness considerations
+   - 7.7 Falsification scope
 8. Conclusion
 
 Acknowledgments
