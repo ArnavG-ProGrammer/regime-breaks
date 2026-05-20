@@ -579,7 +579,7 @@ The simultaneous-equation concern is particularly relevant. In the Brunnermeier 
 
 The proxy-based design introduces a further identification challenge. The Bridgewater replicator and Two Sigma factor proxy measure the returns of publicly available ETFs, not the actual institutional portfolios. A significant regression coefficient on MTUM tells us that momentum-factor ETF returns were predictable from spreads; it does not prove that Two Sigma's internal positions experienced the same dynamic. The inference from proxy to institution requires an assumption of directional alignment that is supported by construction (Section 3.4) but not verified against actual fund returns.
 
-### 7.5 Robustness considerations
+### 7.6 Robustness considerations
 
 Several robustness checks would strengthen the findings but lie beyond the scope of this two-event study.
 
@@ -593,7 +593,7 @@ Fourth, bootstrap inference: block-bootstrapping the event-window regressions wi
 
 Fifth, multiple-testing corrections: applying Benjamini-Hochberg false discovery rate control across all strategy-event pairs would address the concern that the significant 2020 coefficients could be false positives from multiple comparisons.
 
-### 7.6 Falsification scope
+### 7.7 Falsification scope
 
 The credit-liquidity hypothesis survives a single falsification test: the 2024 yen carry unwind did not produce the regression signature observed in 2020. The non-result is consistent with the hypothesis but does not prove it. Alternative explanations, including event duration, shock magnitude, and geographic scope, remain viable.
 
