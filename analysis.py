@@ -116,7 +116,7 @@ FIRM_LABELS = {
     "Bridgewater_replicator": "Bridgewater (replicator)",
     "TwoSigma_factor_proxy": "Two Sigma (factor proxy)",
     "MTUM": "Two Sigma (momentum proxy)",
-    "DBMF": "Two Sigma (managed-fut. proxy)",
+    "DBMF": "Two Sigma (managed futures)",
     "^GSPC": "S&P 500 (benchmark)",
     "^N225": "Nikkei 225 (benchmark)",
     "^VIX": "VIX (level)",
@@ -527,8 +527,24 @@ def analysis_5_cross_event(t1: pd.DataFrame, t3: pd.DataFrame) -> pd.DataFrame:
     log.info(f"Analysis 5: wrote table5_cross_event_synthesis.csv")
 
     # Scatter: drawdown in COVID vs drawdown in yen-carry
+    # Restrict to the strategies the paper actually discusses, so the chart
+    # is readable. Underlying components (QUAL, USMV, DBC, EEM, FXI, GLD, TIP,
+    # DX-Y.NYB, JPY=X, ^MOVE) are excluded to avoid label clutter.
+    SCATTER_TICKERS = [
+        "JPM",                       # JPMorgan (equity)
+        "IVV",                       # BlackRock (IVV proxy)
+        "AGG",                       # BlackRock (AGG proxy)
+        "TLT",                       # BlackRock (TLT proxy)
+        "Bridgewater_replicator",    # Bridgewater (replicator)
+        "TwoSigma_factor_proxy",     # Two Sigma (factor proxy)
+        "MTUM",                      # Two Sigma (momentum proxy)
+        "DBMF",                      # Two Sigma (managed futures)
+        "HYG",                       # BlackRock (HYG proxy)
+        "^GSPC",                     # S&P 500 (benchmark)
+        "^N225",                     # Nikkei 225 (benchmark)
+    ]
     if "covid_2020_drawdown" in merged.columns and "yen_carry_2024_drawdown" in merged.columns:
-        plot_df = merged.dropna(
+        plot_df = merged[merged["ticker"].isin(SCATTER_TICKERS)].dropna(
             subset=["covid_2020_drawdown", "yen_carry_2024_drawdown"]
         )
         if not plot_df.empty:
