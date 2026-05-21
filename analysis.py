@@ -39,6 +39,12 @@ try:
 except ImportError as e:
     raise SystemExit("statsmodels required: pip install statsmodels") from e
 
+try:
+    from adjustText import adjust_text
+    _HAS_ADJUSTTEXT = True
+except ImportError:
+    _HAS_ADJUSTTEXT = False
+
 
 ROOT = Path(__file__).resolve().parent
 DATA_DIR = ROOT / "data"
@@ -526,20 +532,47 @@ def analysis_5_cross_event(t1: pd.DataFrame, t3: pd.DataFrame) -> pd.DataFrame:
             subset=["covid_2020_drawdown", "yen_carry_2024_drawdown"]
         )
         if not plot_df.empty:
-            fig, ax = plt.subplots(figsize=(6.5, 6.5))
-            ax.scatter(
-                plot_df["covid_2020_drawdown"] * 100,
-                plot_df["yen_carry_2024_drawdown"] * 100,
-                color=NAVY, s=50, alpha=0.8,
-            )
-            for _, row in plot_df.iterrows():
-                ax.annotate(
-                    row["label"],
-                    (row["covid_2020_drawdown"] * 100,
-                     row["yen_carry_2024_drawdown"] * 100),
-                    fontsize=7, alpha=0.8, xytext=(4, 4),
-                    textcoords="offset points",
+            fig, ax = plt.subplots(figsize=(10, 8))
+            xs = (plot_df["covid_2020_drawdown"] * 100).values
+            ys = (plot_df["yen_carry_2024_drawdown"] * 100).values
+            ax.scatter(xs, ys, color=NAVY, s=55, alpha=0.85, zorder=5)
+
+            labels = plot_df["label"].tolist()
+            if _HAS_ADJUSTTEXT:
+                texts = [
+                    ax.text(xs[i], ys[i], labels[i], fontsize=8)
+                    for i in range(len(labels))
+                ]
+                adjust_text(
+                    texts,
+                    ax=ax,
+                    arrowprops=dict(arrowstyle="-", color=GRAY,
+                                    lw=0.5, alpha=0.7),
+                    expand_points=(1.6, 1.8),
+                    expand_text=(1.3, 1.5),
+                    force_text=(0.4, 0.6),
+                    only_move={"points": "y", "text": "xy"},
                 )
+            else:
+                # Fallback: alternate label offsets to reduce overlap
+                for i in range(len(labels)):
+                    dx, dy = (6, 6) if i % 2 == 0 else (6, -10)
+                    ax.annotate(
+                        labels[i], (xs[i], ys[i]),
+                        fontsize=8, alpha=0.9,
+                        xytext=(dx, dy), textcoords="offset points",
+                        bbox=dict(boxstyle="round,pad=0.2", fc="white",
+                                  ec="none", alpha=0.7),
+                        arrowprops=dict(arrowstyle="-", lw=0.4,
+                                        color=GRAY, alpha=0.6),
+                    )
+
+            # Add a little headroom so labels near the edges are not clipped
+            xpad = (xs.max() - xs.min()) * 0.12 if len(xs) > 1 else 5
+            ypad = (ys.max() - ys.min()) * 0.12 if len(ys) > 1 else 5
+            ax.set_xlim(xs.min() - xpad, xs.max() + xpad)
+            ax.set_ylim(ys.min() - ypad, ys.max() + ypad)
+
             ax.set_xlabel("Max drawdown, COVID 2020 (%)")
             ax.set_ylabel("Max drawdown, yen carry 2024 (%)")
             ax.set_title("Architecture stress: how the same strategies fared "
