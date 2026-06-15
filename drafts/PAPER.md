@@ -608,6 +608,17 @@ A natural objection to the event-study design of this paper is that the two stre
 
 For the March 2020 window, the model classifies the large majority of trading days into the crisis regime under every specification, and GARCH conditional volatility reaches several times its normal level (Table 8; Figure 7). The March 2020 window is therefore robustly recovered by a model blind to the event, and its selection is not an artifact of researcher discretion.
 
+**Table 8.** Endogenous regime classification of event windows. Crisis share is the percentage of trading days within each event window assigned to the highest-variance crisis regime by a Gaussian Hidden Markov Model blind to the event dates. The four specifications are two and three latent states, each estimated on returns alone and on returns plus twenty-one-day realized volatility. GARCH volatility is the average within-window conditional volatility expressed as a multiple of the full-sample level.
+
+| Event | Instrument | Crisis share 2-state (returns) | Crisis share 2-state (returns+vol) | Crisis share 3-state (returns) | Crisis share 3-state (returns+vol) | GARCH volatility (multiple of normal) |
+|------------|-------------|---:|---:|---:|---:|---:|
+| March 2020  | S&P 500     | 96%  | 96%  | 96%  | 90% | 3.5x |
+| August 2024 | S&P 500     | 44%  | 75%  | 0%   | 0%  | 1.3x |
+| August 2024 | USD/JPY     | 12%  | 100% | 25%  | 100% | 1.7x |
+| August 2024 | Nikkei 225  | 100% | 100% | 100% | 60% | 2.6x |
+
+Source: robustness/results.md and robustness/results_carry.md.
+
 The August 2024 window behaves differently on US equities, where only a minority to moderate share of days is classified as crisis on the S&P 500 and GARCH volatility is modestly elevated. Rather than treating this as a weak result, I interpret it as informative about the nature of the event. The August 2024 episode was a yen carry-trade unwind that transmitted most violently through foreign exchange and Japanese equities rather than US equities, where it appeared as a single-session shock on the fifth of August that largely reversed within days. Re-estimating the identical model on the instruments at the center of the unwind confirms this. On the Nikkei 225, the window is classified as crisis under every specification. On USD/JPY, the volatility-aware specifications classify the entire window as crisis, while the returns-only specifications are weaker, consistent with foreign-exchange stress that is sustained rather than concentrated in a single record move; a returns-only model reserves the crisis state for the most extreme individual days and recovers the window only once volatility persistence is modeled explicitly.
 
 Both event windows are thus recovered by an unsupervised model when applied to the markets through which each crisis actually propagated. The contrast is itself a result. March 2020 was a broad systemic liquidity crisis visible across asset classes, whereas August 2024 was a concentrated leverage unwind localized to foreign exchange and Japanese equities. This structural difference is precisely what makes a comparison of institutional risk responses across the two episodes informative, since the events stress different components of a risk architecture.
