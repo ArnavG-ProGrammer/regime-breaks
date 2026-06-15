@@ -56,6 +56,13 @@ logs/
   pipeline.log
 ```
 
+## Robustness analysis
+
+An unsupervised regime-detection robustness check, blind to the event dates, accompanies the main pipeline (Section 8 and Appendix D of the paper):
+
+- `robustness/regime_detection.py` fits a Gaussian Hidden Markov Model with a GARCH(1,1) cross-check to S&P 500 returns and independently recovers the March 2020 crisis window; see `robustness/results.md`.
+- `robustness/regime_detection_carry.py` applies the identical method to USD/JPY and the Nikkei 225 and recovers the August 2024 yen carry unwind; see `robustness/results_carry.md`.
+
 ## Provenance
 
 Every series is annotated in `data_pipeline.py` with its source URL and a

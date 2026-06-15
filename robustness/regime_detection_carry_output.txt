@@ -1,0 +1,305 @@
+
+==============================================================================
+AUGUST 2024 ROBUSTNESS CHECK --- USD/JPY AND THE NIKKEI --- START
+==============================================================================
+
+[INTERPRETATION] Goal: re-run the EXACT S&P methodology on the markets the yen-carry unwind actually hit (the dollar/yen rate and Japanese equities) and check whether a BLIND model flags August 2024 as a crisis there --- the signal that was weak on the S&P.
+
+
+==============================================================================
+ANALYSING USD/JPY EXCHANGE RATE  (USDJPY=X)
+==============================================================================
+
+==============================================================================
+DOWNLOAD USDJPY=X AND COMPUTE DAILY LOG RETURNS
+==============================================================================
+
+[INTERPRETATION] Downloaded 1825 trading days of adjusted closing prices for USDJPY=X.
+
+
+[INTERPRETATION] Computed 1824 daily log returns. Sample mean +0.00018, daily standard deviation 0.00538.
+
+
+[INTERPRETATION] FEATURE SET 1 = the daily log returns alone (reshaped to one column, as hmmlearn requires a 2-D array).
+
+
+[INTERPRETATION] FEATURE SET 2 = each day's log return PLUS a 21-day rolling realized volatility (std of the last ~month of returns). The two columns live on different scales, so we StandardScale them (subtract mean, divide by std) so neither dominates by sheer magnitude.
+
+
+==============================================================================
+FIT HMM - usdjpy FS1 returns, 2-state  (n_components=2)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1824 days to one of 2 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the usdjpy FS1 returns, 2-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.000252     0.00002639       calm
+       1    -0.001098     0.00029573     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the usdjpy FS1 returns, 2-state model the highest-variance state is ALSO the lowest-mean state --- the classic crisis signature (big swings, falling prices). For USD/JPY a falling rate means the yen is surging, which is exactly what a carry-trade unwind looks like.
+
+
+==============================================================================
+FIT HMM - usdjpy FS1 returns, 3-state  (n_components=3)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1824 days to one of 3 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the usdjpy FS1 returns, 3-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.000235     0.00003487       calm
+       1     0.000288     0.00003579       calm
+       2    -0.003345     0.00049714     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the usdjpy FS1 returns, 3-state model the highest-variance state is ALSO the lowest-mean state --- the classic crisis signature (big swings, falling prices). For USD/JPY a falling rate means the yen is surging, which is exactly what a carry-trade unwind looks like.
+
+
+==============================================================================
+FIT HMM - usdjpy FS2 returns+vol, 2-state  (n_components=2)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1804 days to one of 2 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the usdjpy FS2 returns+vol, 2-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.005373     0.40997897       calm
+       1    -0.006945     1.76253452     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the usdjpy FS2 returns+vol, 2-state model the highest-variance state is ALSO the lowest-mean state --- the classic crisis signature (big swings, falling prices). For USD/JPY a falling rate means the yen is surging, which is exactly what a carry-trade unwind looks like.
+
+
+==============================================================================
+FIT HMM - usdjpy FS2 returns+vol, 3-state  (n_components=3)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1804 days to one of 3 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the usdjpy FS2 returns+vol, 3-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       2     0.012953     0.35993701       calm
+       1    -0.011824     0.88771854       calm
+       0    -0.010338     2.19188260     CRISIS
+
+[INTERPRETATION] NOTE: in the usdjpy FS2 returns+vol, 3-state model the highest-variance state is not the single most-negative-mean state. We still define crisis by variance (the original rule), but flag it so the reader can judge. In FX, extreme moves can run both directions, so the highest-variance state is the right 'turbulence' marker even when its mean is not the very lowest.
+
+
+==============================================================================
+TABLE - TRANSITION MATRIX & EXPECTED DURATION  (usdjpy FS1 returns, 2-state)
+==============================================================================
+
+[INTERPRETATION] The transition matrix answers: 'given today's mood, what is the chance of each mood tomorrow?' Rows sum to 1. The diagonal p_ii (mood persists) is usually near 1 because moods are sticky. Expected duration = 1/(1 - p_ii): a 95% daily persistence implies an average run of 1/0.05 = 20 days.
+
+          -> s0         -> s1       
+  from s0      0.9476     0.0524
+  from s1      0.9963     0.0037
+
+   state  p_ii (stay)   expected duration (days)
+       0       0.9476                       19.1
+       1       0.0037                        1.0
+
+==============================================================================
+TABLE - PER-REGIME RETURN STATISTICS  (usdjpy FS1 returns, 2-state)
+==============================================================================
+
+[INTERPRETATION] For each mood, using the ACTUAL returns of its days: average daily return, ANNUALISED volatility (daily std x sqrt(252)), and day count. The crisis regime should stand out with high annualised volatility.
+
+
+   state     role   mean daily ret   annualised vol   day count
+       0     calm         0.000237           0.0727        1786
+       1   CRISIS        -0.002246           0.3213          38
+
+==============================================================================
+FIGURE - RETURNS WITH HMM CRISIS REGIME SHADED  (USD/JPY exchange rate)
+==============================================================================
+
+[INTERPRETATION] Saved fig_hmm_regimes_usdjpy_carry.png. Check whether a red crisis band sits right on the blue August 2024 marker.
+
+
+==============================================================================
+INDEPENDENT CROSS-CHECK WITH GARCH(1,1)  (USD/JPY exchange rate)
+==============================================================================
+
+[INTERPRETATION] GARCH(1,1) is a completely different, standard econometric model. It does not sort days into moods; it estimates a smooth day-by-day VOLATILITY level. If GARCH volatility ALSO spikes in August 2024, two independent methods agree --- far stronger than either alone. We run it on returns in percent (x100) with a Student-t error distribution to handle fat tails.
+
+
+[INTERPRETATION] Saved fig_garch_volatility_usdjpy_carry.png. Check that the curve jumps up at the blue August 2024 marker.
+
+
+[INTERPRETATION] GARCH volatility during August 2024 averaged 0.87%/day versus 0.52%/day for the full 2018-2024 sample (1.7x the typical level).
+
+
+==============================================================================
+HEADLINE - AUGUST 2024 CRISIS SHARE  (USD/JPY exchange rate)
+==============================================================================
+
+  specification                  Aug 2024 crisis share
+  FS1 returns, 2-state                            12%
+  FS1 returns, 3-state                            25%
+  FS2 returns+vol, 2-state                       100%
+  FS2 returns+vol, 3-state                       100%
+
+  (window = 2024-07-25 to 2024-08-15, 16 trading days)
+
+  Non-calm share (3-state models, any abnormal mood):
+  FS1 returns, 3-state                            62%
+  FS2 returns+vol, 3-state                       100%
+
+[INTERPRETATION] USD/JPY exchange rate: the crisis share ranges 12-100% across specifications --- a clear majority in at least some, materially stronger than the S&P. Where the extreme-crisis count is lower, the 3-state non-calm share above shows the window is still flagged as abnormal.
+
+
+==============================================================================
+ANALYSING NIKKEI 225 (JAPAN)  (^N225)
+==============================================================================
+
+==============================================================================
+DOWNLOAD ^N225 AND COMPUTE DAILY LOG RETURNS
+==============================================================================
+
+[INTERPRETATION] Downloaded 1709 trading days of adjusted closing prices for ^N225.
+
+
+[INTERPRETATION] Computed 1708 daily log returns. Sample mean +0.00031, daily standard deviation 0.01291.
+
+
+[INTERPRETATION] FEATURE SET 1 = the daily log returns alone (reshaped to one column, as hmmlearn requires a 2-D array).
+
+
+[INTERPRETATION] FEATURE SET 2 = each day's log return PLUS a 21-day rolling realized volatility (std of the last ~month of returns). The two columns live on different scales, so we StandardScale them (subtract mean, divide by std) so neither dominates by sheer magnitude.
+
+
+==============================================================================
+FIT HMM - nikkei FS1 returns, 2-state  (n_components=2)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1708 days to one of 2 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the nikkei FS1 returns, 2-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.000664     0.00011585       calm
+       1    -0.004328     0.00097318     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the nikkei FS1 returns, 2-state model the highest-variance state is ALSO the lowest-mean state --- the classic crisis signature (big swings, falling prices). For USD/JPY a falling rate means the yen is surging, which is exactly what a carry-trade unwind looks like.
+
+
+==============================================================================
+FIT HMM - nikkei FS1 returns, 3-state  (n_components=3)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1708 days to one of 3 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the nikkei FS1 returns, 3-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.001546     0.00010819       calm
+       1    -0.000360     0.00014512       calm
+       2    -0.004725     0.00118745     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the nikkei FS1 returns, 3-state model the highest-variance state is ALSO the lowest-mean state --- the classic crisis signature (big swings, falling prices). For USD/JPY a falling rate means the yen is surging, which is exactly what a carry-trade unwind looks like.
+
+
+==============================================================================
+FIT HMM - nikkei FS2 returns+vol, 2-state  (n_components=2)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1688 days to one of 2 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the nikkei FS2 returns+vol, 2-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.018254     0.60785967       calm
+       1    -0.063585     2.36079352     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the nikkei FS2 returns+vol, 2-state model the highest-variance state is ALSO the lowest-mean state --- the classic crisis signature (big swings, falling prices). For USD/JPY a falling rate means the yen is surging, which is exactly what a carry-trade unwind looks like.
+
+
+==============================================================================
+FIT HMM - nikkei FS2 returns+vol, 3-state  (n_components=3)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned all 1688 days to one of 3 hidden moods, using only the return data --- it was never told when August 2024 was.
+
+
+  Per-state fingerprint for the nikkei FS2 returns+vol, 3-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       2     0.051242     0.48266929       calm
+       0    -0.069118     1.02348303       calm
+       1    -0.003449     3.41021761     CRISIS
+
+[INTERPRETATION] NOTE: in the nikkei FS2 returns+vol, 3-state model the highest-variance state is not the single most-negative-mean state. We still define crisis by variance (the original rule), but flag it so the reader can judge. In FX, extreme moves can run both directions, so the highest-variance state is the right 'turbulence' marker even when its mean is not the very lowest.
+
+
+==============================================================================
+TABLE - TRANSITION MATRIX & EXPECTED DURATION  (nikkei FS1 returns, 2-state)
+==============================================================================
+
+[INTERPRETATION] The transition matrix answers: 'given today's mood, what is the chance of each mood tomorrow?' Rows sum to 1. The diagonal p_ii (mood persists) is usually near 1 because moods are sticky. Expected duration = 1/(1 - p_ii): a 95% daily persistence implies an average run of 1/0.05 = 20 days.
+
+          -> s0         -> s1       
+  from s0      0.9904     0.0096
+  from s1      0.1252     0.8748
+
+   state  p_ii (stay)   expected duration (days)
+       0       0.9904                      104.4
+       1       0.8748                        8.0
+
+==============================================================================
+TABLE - PER-REGIME RETURN STATISTICS  (nikkei FS1 returns, 2-state)
+==============================================================================
+
+[INTERPRETATION] For each mood, using the ACTUAL returns of its days: average daily return, ANNUALISED volatility (daily std x sqrt(252)), and day count. The crisis regime should stand out with high annualised volatility.
+
+
+   state     role   mean daily ret   annualised vol   day count
+       0     calm         0.000520           0.1683        1608
+       1   CRISIS        -0.003074           0.5116         100
+
+==============================================================================
+FIGURE - RETURNS WITH HMM CRISIS REGIME SHADED  (Nikkei 225 (Japan))
+==============================================================================
+
+[INTERPRETATION] Saved fig_hmm_regimes_nikkei_carry.png. Check whether a red crisis band sits right on the blue August 2024 marker.
+
+
+==============================================================================
+INDEPENDENT CROSS-CHECK WITH GARCH(1,1)  (Nikkei 225 (Japan))
+==============================================================================
+
+[INTERPRETATION] GARCH(1,1) is a completely different, standard econometric model. It does not sort days into moods; it estimates a smooth day-by-day VOLATILITY level. If GARCH volatility ALSO spikes in August 2024, two independent methods agree --- far stronger than either alone. We run it on returns in percent (x100) with a Student-t error distribution to handle fat tails.
+
+
+[INTERPRETATION] Saved fig_garch_volatility_nikkei_carry.png. Check that the curve jumps up at the blue August 2024 marker.
+
+
+[INTERPRETATION] GARCH volatility during August 2024 averaged 3.10%/day versus 1.22%/day for the full 2018-2024 sample (2.6x the typical level).
+
+
+==============================================================================
+HEADLINE - AUGUST 2024 CRISIS SHARE  (Nikkei 225 (Japan))
+==============================================================================
+
+  specification                  Aug 2024 crisis share
+  FS1 returns, 2-state                           100%
+  FS1 returns, 3-state                           100%
+  FS2 returns+vol, 2-state                       100%
+  FS2 returns+vol, 3-state                        60%
+
+  (window = 2024-07-25 to 2024-08-15, 15 trading days)
+
+  Non-calm share (3-state models, any abnormal mood):
+  FS1 returns, 3-state                           100%
+  FS2 returns+vol, 3-state                       100%
+
+[INTERPRETATION] Nikkei 225 (Japan): across ALL four specifications, 60-100% of the August 2024 window was independently flagged as crisis. The blind model strongly and robustly confirms the carry unwind as a crisis HERE --- a far stronger signal than on the S&P.
+
+
+Wrote C:\Users\CCI\regime-robustness\results_carry.md
+
+==============================================================================
+DONE --- see results_carry.md and the *_carry.png figures
+==============================================================================

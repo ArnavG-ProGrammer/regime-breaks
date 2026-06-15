@@ -1,0 +1,209 @@
+
+==============================================================================
+REGIME-DETECTION ROBUSTNESS CHECK --- START
+==============================================================================
+
+[INTERPRETATION] Goal: show that a model BLIND to the paper's hypothesis independently flags March 2020 and August 2024 as crisis regimes. If it does, the hand-picked windows were not cherry-picked --- they are the data's genuine stress events.
+
+
+==============================================================================
+STEP 1 - DOWNLOAD S&P 500 AND COMPUTE DAILY LOG RETURNS
+==============================================================================
+
+[INTERPRETATION] Downloading the S&P 500 index (^GSPC), 2018-01-01 to 2024-12-31. We use the ADJUSTED close, which folds dividends back in so that price changes reflect what an investor actually earned.
+
+
+[INTERPRETATION] Downloaded 1760 trading days of adjusted closing prices.
+
+
+[INTERPRETATION] Computed 1759 daily log returns (one NaN dropped at the very start). Sample mean is +0.00045 and daily standard deviation is 0.01248 --- typical for a broad equity index.
+
+
+[INTERPRETATION] FEATURE SET 1 = the daily log returns alone. This is the simplest possible input: we let the model find moods purely from how big and which direction each day's move was. (hmmlearn needs a 2-D array, so we reshape to one column.)
+
+
+[INTERPRETATION] FEATURE SET 2 = each day's log return PLUS a 21-day rolling 'realized volatility' (the standard deviation of the last ~month of returns, roughly one trading month). Adding a memory of recent turbulence often sharpens the calm-vs-crisis distinction. Because the two features live on very different numeric scales, we StandardScale them (subtract mean, divide by std) so neither dominates just by being numerically larger.
+
+
+==============================================================================
+FIT HMM - FEATURE SET 1 (returns), 2-state  (n_components=2)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned every one of the 1759 days to one of 2 hidden moods, using only the return data.
+
+
+  Per-state fingerprint for the FEATURE SET 1 (returns), 2-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.001105     0.00006849       calm
+       1    -0.002386     0.00058022     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the FEATURE SET 1 (returns), 2-state model the highest-variance state is ALSO the lowest-mean (most negative average return) state. That is exactly the signature of a market crisis --- big swings, falling prices.
+
+
+==============================================================================
+FIT HMM - FEATURE SET 1 (returns), 3-state  (n_components=3)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned every one of the 1759 days to one of 3 hidden moods, using only the return data.
+
+
+  Per-state fingerprint for the FEATURE SET 1 (returns), 3-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       1     0.000973     0.00007231       calm
+       0     0.001085     0.00009407       calm
+       2    -0.003118     0.00070570     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the FEATURE SET 1 (returns), 3-state model the highest-variance state is ALSO the lowest-mean (most negative average return) state. That is exactly the signature of a market crisis --- big swings, falling prices.
+
+
+==============================================================================
+FIT HMM - FEATURE SET 2 (returns+vol), 2-state  (n_components=2)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned every one of the 1739 days to one of 2 hidden moods, using only the return data.
+
+
+  Per-state fingerprint for the FEATURE SET 2 (returns+vol), 2-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.039176     0.29315303       calm
+       1    -0.053711     1.96414279     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the FEATURE SET 2 (returns+vol), 2-state model the highest-variance state is ALSO the lowest-mean (most negative average return) state. That is exactly the signature of a market crisis --- big swings, falling prices.
+
+
+==============================================================================
+FIT HMM - FEATURE SET 2 (returns+vol), 3-state  (n_components=3)
+==============================================================================
+
+[INTERPRETATION] The HMM converged and assigned every one of the 1739 days to one of 3 hidden moods, using only the return data.
+
+
+  Per-state fingerprint for the FEATURE SET 2 (returns+vol), 3-state model (states sorted calm -> crisis):
+   state     mean ret       variance       role
+       0     0.029100     0.28686583       calm
+       1    -0.033579     0.99448726       calm
+       2    -0.039010     4.49631761     CRISIS
+
+[INTERPRETATION] CONFIRMED: in the FEATURE SET 2 (returns+vol), 3-state model the highest-variance state is ALSO the lowest-mean (most negative average return) state. That is exactly the signature of a market crisis --- big swings, falling prices.
+
+
+==============================================================================
+TABLE - TRANSITION MATRIX & EXPECTED DURATION  (FEATURE SET 1 (returns), 2-state)
+==============================================================================
+
+[INTERPRETATION] The transition matrix answers: 'given today's mood, what is the chance of each mood tomorrow?' Each row sums to 1. The diagonal entries p_ii (mood stays the same) are usually close to 1 because moods are sticky --- a calm market tends to stay calm, a panicking market tends to keep panicking.
+
+          -> s0         -> s1       
+  from s0      0.9864     0.0136
+  from s1      0.0581     0.9419
+
+[INTERPRETATION] Expected regime duration = 1 / (1 - p_ii). Intuition: if a mood has a 95%% chance of persisting each day (p_ii = 0.95), it lasts on average 1/0.05 = 20 days. A LONG expected duration for the calm state and a SHORTER one for the crisis state matches reality: crises are violent but relatively brief.
+
+
+   state  p_ii (stay)   expected duration (days)
+       0       0.9864                       73.7
+       1       0.9419                       17.2
+
+==============================================================================
+TABLE - PER-REGIME RETURN STATISTICS  (FEATURE SET 1 (returns), 2-state)
+==============================================================================
+
+[INTERPRETATION] For each mood we now report, using the ACTUAL returns of the days assigned to it: the average daily return, the ANNUALISED volatility (daily standard deviation x sqrt(252) trading days), and how many days fell in that mood. The crisis regime should jump out: sharply negative mean, very high annualised volatility.
+
+
+   state     role   mean daily ret   annualised vol   day count
+       0     calm         0.001041           0.1259        1459
+       1   CRISIS        -0.002447           0.3883         300
+
+==============================================================================
+TABLE - TRANSITION MATRIX & EXPECTED DURATION  (FEATURE SET 1 (returns), 3-state)
+==============================================================================
+
+[INTERPRETATION] The transition matrix answers: 'given today's mood, what is the chance of each mood tomorrow?' Each row sums to 1. The diagonal entries p_ii (mood stays the same) are usually close to 1 because moods are sticky --- a calm market tends to stay calm, a panicking market tends to keep panicking.
+
+          -> s0         -> s1         -> s2       
+  from s0      0.0016     0.9984     0.0000
+  from s1      0.9565     0.0218     0.0217
+  from s2      0.0612     0.0058     0.9330
+
+[INTERPRETATION] Expected regime duration = 1 / (1 - p_ii). Intuition: if a mood has a 95%% chance of persisting each day (p_ii = 0.95), it lasts on average 1/0.05 = 20 days. A LONG expected duration for the calm state and a SHORTER one for the crisis state matches reality: crises are violent but relatively brief.
+
+
+   state  p_ii (stay)   expected duration (days)
+       0       0.0016                        1.0
+       1       0.0218                        1.0
+       2       0.9330                       14.9
+
+==============================================================================
+TABLE - PER-REGIME RETURN STATISTICS  (FEATURE SET 1 (returns), 3-state)
+==============================================================================
+
+[INTERPRETATION] For each mood we now report, using the ACTUAL returns of the days assigned to it: the average daily return, the ANNUALISED volatility (daily standard deviation x sqrt(252) trading days), and how many days fell in that mood. The crisis regime should jump out: sharply negative mean, very high annualised volatility.
+
+
+   state     role   mean daily ret   annualised vol   day count
+       0     calm         0.001231           0.1414         762
+       1     calm         0.000802           0.1254         762
+       2   CRISIS        -0.003256           0.4176         235
+
+==============================================================================
+FIGURE 1 - RETURNS WITH HMM CRISIS REGIME SHADED
+==============================================================================
+
+[INTERPRETATION] Saved C:\Users\CCI\regime-robustness\fig_hmm_regimes.png. Read it like this: wherever the red shading clusters is where the model --- with no knowledge of our hypothesis --- detected genuine market stress. Check whether the red bands line up with the two blue event markers.
+
+
+==============================================================================
+STEP - INDEPENDENT CROSS-CHECK WITH GARCH(1,1)
+==============================================================================
+
+[INTERPRETATION] The HMM is one way to find stress. To make sure the finding is not an artefact of that one model, we now fit a completely different, standard econometric model: GARCH(1,1). It does not classify days into moods; instead it estimates a smooth, day-by-day VOLATILITY level. If GARCH's volatility also spikes in March 2020 and August 2024, two independent methods agree, which is much stronger evidence than either alone.
+
+
+[INTERPRETATION] GARCH(1,1) fitted. Its 'conditional volatility' is the model's running estimate of how turbulent each day was, given the recent past.
+
+
+[INTERPRETATION] Saved C:\Users\CCI\regime-robustness\fig_garch_volatility.png. Read it like this: tall peaks are turbulent periods. Check that the curve rises sharply at the two blue event markers --- a second, independent confirmation of stress in those windows.
+
+
+[INTERPRETATION] GARCH volatility during 'March 2020 (COVID crash)' averaged 3.75%/day versus 1.09%/day for the full 2018-2024 sample (3.5x the typical level).
+
+
+[INTERPRETATION] GARCH volatility during 'August 2024 (yen carry unwind)' averaged 1.37%/day versus 1.09%/day for the full 2018-2024 sample (1.3x the typical level).
+
+
+==============================================================================
+HEADLINE RESULT - FRACTION OF EACH EVENT WINDOW FLAGGED 'CRISIS'
+==============================================================================
+
+[INTERPRETATION] This is the number that defends the paper. For each hand-picked window we report the fraction of trading days the BLIND model independently called 'crisis'. A value near 1.00 means near-total agreement that the window was a true stress event. We report it across FOUR specifications so the reader can see the finding is not a fluke of one modelling choice.
+
+
+  specification                   March 2020 (COVID cras    August 2024 (yen carry
+  FS1 returns, 2-state                          96% / 50d                  44% / 16d
+  FS1 returns, 3-state                          96% / 50d                   0% / 16d
+  FS2 returns+vol, 2-state                      96% / 50d                  75% / 16d
+  FS2 returns+vol, 3-state                      90% / 50d                   0% / 16d
+
+  (each cell = % of the window's trading days flagged crisis / number of trading days in the window)
+
+[INTERPRETATION] Extra diagnostic for the 3-STATE models: with three moods, the model separates an 'elevated-volatility' mood from the most 'extreme-crisis' mood. A window can be flagged as clearly abnormal (non-calm) without hitting the extreme state, so the pure crisis count understates it. Below is the share of each window in ANY non-calm state.
+
+
+  3-state specification           March 2020 (COVID cras    August 2024 (yen carry
+  FS1 returns, 3-state                              98%                      50%
+  FS2 returns+vol, 3-state                          96%                      75%
+
+  (each cell = % of the window's trading days in ANY non-calm regime)
+
+[INTERPRETATION] 'March 2020 (COVID crash)': across ALL four specifications, 90-96% of the window was independently flagged as crisis. The blind model strongly and robustly agrees this was a genuine stress event.
+
+
+[INTERPRETATION] 'August 2024 (yen carry unwind)': the crisis share swings widely with modelling choices (0-75%); only 1 of 4 specifications flag a majority of the window as EXTREME crisis. This is a REAL but MILDER and BRIEFER episode than March 2020 in raw index returns. In the 3-state models the window's days are largely absorbed into the 'elevated-volatility' mood instead of the extreme state --- note that 50-75% of the window is still flagged as NON-CALM there. Report this honestly rather than overclaiming.
+
+
+Wrote C:\Users\CCI\regime-robustness\results.md
+
+==============================================================================
+DONE --- see results.md, fig_hmm_regimes.png, fig_garch_volatility.png
+==============================================================================
