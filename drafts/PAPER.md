@@ -811,3 +811,18 @@ The manifest.json file records precise package versions and the FRED data-fetch 
 | USD/JPY | FRED + Yahoo | DEXJPUS, JPY=X | daily | 2019-10-01 to 2024-12-13 |
 
 All raw downloads cached locally and hashed with SHA-256. See `data/manifest.json` in the repository.
+
+---
+
+## Appendix D: Endogenous Regime Detection, Per-Regime Statistics
+
+This appendix reports the per-regime statistics for the primary S&P 500 specification used in the robustness check of Section 8. The two-state Gaussian Hidden Markov Model, fit to daily log returns over 2018 to 2024, separates a calm regime from a higher-variance crisis regime. The crisis regime carries a negative average daily return and a much higher annualized volatility than the calm regime, the expected signature of market stress.
+
+**Table 9.** Per-regime statistics, S&P 500 two-state model.
+
+| Regime | Mean daily return | Annualized volatility | Number of days |
+|--------|------------------:|----------------------:|---------------:|
+| Calm   | +0.10%            | 12.6%                 | 1,459          |
+| Crisis | -0.24%            | 38.8%                 | 300            |
+
+Source: robustness/regime_detection_output.txt.
