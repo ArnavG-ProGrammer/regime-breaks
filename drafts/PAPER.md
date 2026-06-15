@@ -83,7 +83,8 @@ When markets break, do architecturally distinct AI and quantitative strategies f
    - 7.5 Identification limitations
    - 7.6 Robustness considerations
    - 7.7 Falsification scope
-8. Conclusion
+8. Robustness: Endogenous Identification of Event Windows
+9. Conclusion
 
 Acknowledgments
 
@@ -94,6 +95,8 @@ Appendix A: Verification of Source Material
 Appendix B: Reproducibility
 
 Appendix C: Data Sources
+
+Appendix D: Endogenous Regime Detection, Per-Regime Statistics
 
 \newpage
 
